@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.6](https://github.com/Zefiros-Software/axioms/compare/v0.1.5...v0.1.6) (2019-04-05)
+
+
+### Features
+
+* add index with re-export ([67248f9](https://github.com/Zefiros-Software/axioms/commit/67248f9))
+
+
+
 ## [0.1.5](https://github.com/Zefiros-Software/axioms/compare/v0.1.4...v0.1.5) (2019-04-05)
 
 

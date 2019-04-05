@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/Zefiros-Software/axioms.git"
   },
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Library with axioms for writing Typescript/Javascript",
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
