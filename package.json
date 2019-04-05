@@ -1,6 +1,10 @@
 {
   "private": true,
   "name": "@zefiros/axioms",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zefiros-Software/axioms.git"
+  },
   "version": "0.0.1",
   "description": "Build tools for Therefore",
   "files": ["dist/", "src/"],
