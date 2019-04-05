@@ -7,13 +7,10 @@
   },
   "version": "0.1.2",
   "description": "Build tools for Therefore",
-  "files": [
-    "dist/",
-    "src/"
-  ],
+  "files": ["dist/", "src/"],
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.dist.json && find dist -type f -regex '.*.js.map' -exec sed -i.bak 's|../src|./src|g' {} \\; && find dist -type f -regex '.*.bak' -exec rm {} \\; && cp -r src dist/src",
+    "build": "tsc -p tsconfig.dist.json && find dist -type f -regex '.*.js.map' -exec sed -i.bak 's|../src|./src|g' {} \\; && find dist -type f -regex '.*.bak' -exec rm {} \\; && cp -r package.json LICENSE CHANGELOG.md README.md src dist/",
     "test": "tsc && jest test",
     "fix": "yarn lint --fix",
     "lint": "tslint --project tsconfig.json",
