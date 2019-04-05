@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@zefiros/axioms",
   "repository": {
     "type": "git",
@@ -7,10 +6,8 @@
   },
   "version": "0.1.0",
   "description": "Build tools for Therefore",
-  "files": [
-    "dist/",
-    "src/"
-  ],
+  "files": ["dist/", "src/"],
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
     "test": "tsc && jest test",
