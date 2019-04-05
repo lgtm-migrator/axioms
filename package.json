@@ -6,12 +6,7 @@
     "url": "https://github.com/Zefiros-Software/axioms.git"
   },
   "version": "0.1.4",
-  "description": "Build tools for Therefore",
-  "files": [
-    "dist/",
-    "src/"
-  ],
-  "main": "dist/index.js",
+  "description": "Library with axioms for writing Typescript/Javascript",
   "scripts": {
     "build": "tsc -p tsconfig.dist.json && find dist -type f -regex '.*.js.map' -exec sed -i.bak 's|../src|./src|g' {} \\; && find dist -type f -regex '.*.bak' -exec rm {} \\; && cp -r package.json LICENSE CHANGELOG.md README.md src dist/",
     "test": "tsc && jest test",
