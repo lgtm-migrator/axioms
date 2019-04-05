@@ -1,12 +1,16 @@
 {
   "name": "@zefiros/axioms",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Zefiros-Software/axioms.git"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Build tools for Therefore",
-  "files": ["dist/", "src/"],
+  "files": [
+    "dist/",
+    "src/"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
