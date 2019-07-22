@@ -7,6 +7,8 @@
   },
   "version": "0.1.6",
   "description": "Library with axioms for writing Typescript/Javascript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
     "test": "tsc && jest test",
@@ -18,6 +20,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@zefiros/npm-defaults": "^0.1.4"
+    "@zefiros/npm-defaults": "^0.1.5"
   }
 }

@@ -20,6 +20,16 @@ describe('get', () => {
         expect(get(x, ['foo', 'bar'])).toEqual('yay')
     })
 
+    test('get does not overwrite explicit undefined', () => {
+        const x: any = { foo: { bar: undefined } }
+        expect(get(x, ['foo', 'bar'], 'nay')).toEqual(undefined)
+    })
+
+    test('get does not overwrite explicit null', () => {
+        const x: any = { foo: { bar: null } }
+        expect(get(x, ['foo', 'bar'], 'nay')).toEqual(null)
+    })
+
     test('get allows Partial as fallback', () => {
         interface FooBar {
             foo: string

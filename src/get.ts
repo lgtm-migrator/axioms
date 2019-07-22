@@ -13,7 +13,9 @@ export function get<
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
     K4 extends KeyOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>>,
     K5 extends KeyOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>> = ValueOf<
+    F extends
+        | ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>
+        | Partial<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>> = ValueOf<
         ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>,
         K5
     >
@@ -29,7 +31,9 @@ export function get<
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
     K4 extends KeyOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>>,
     K5 extends KeyOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>> = ValueOf<
+    F extends
+        | ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>
+        | Partial<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>> = ValueOf<
         ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>,
         K5
     >
@@ -46,7 +50,9 @@ export function get<
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
     K4 extends KeyOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>> = ValueOf<
+    F extends
+        | ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>
+        | Partial<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>> = ValueOf<
         ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>,
         K4
     >
@@ -61,7 +67,9 @@ export function get<
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
     K4 extends KeyOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>> = ValueOf<
+    F extends
+        | ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>
+        | Partial<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>> = ValueOf<
         ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>,
         K4
     >
@@ -77,7 +85,9 @@ export function get<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
+    F extends
+        | ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>
+        | Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
         ValueOf<ValueOf<O, K1>, K2>,
         K3
     >
@@ -91,7 +101,9 @@ export function get<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
+    F extends
+        | ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>
+        | Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
         ValueOf<ValueOf<O, K1>, K2>,
         K3
     >
@@ -106,7 +118,10 @@ export function get<
     O extends { [k: string]: any | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
-    F extends Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<ValueOf<O, K1>, K2>
+    F extends ValueOf<ValueOf<O, K1>, K2> | Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<
+        ValueOf<O, K1>,
+        K2
+    >
 >(
     obj: O | undefined | null,
     key: [K1, K2],
@@ -116,19 +131,22 @@ export function get<
     O extends { [k: string]: any | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
-    F extends Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<ValueOf<O, K1>, K2>
+    F extends ValueOf<ValueOf<O, K1>, K2> | Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<
+        ValueOf<O, K1>,
+        K2
+    >
 >(obj: O | undefined | null, key: [K1, K2], fallback?: F): ValueOf<ValueOf<O, K1>, K2> | F
 
 // Single argument
 export function get<
     O extends { [k: string]: any | undefined },
     K extends KeyOf<O>,
-    F extends Partial<ValueOf<O, K>> = ValueOf<O, K>
+    F extends ValueOf<O, K> | Partial<ValueOf<O, K>> = ValueOf<O, K>
 >(obj: O | undefined | null, key: [K], fallback: NonNullable<F>): NonNullable<ValueOf<O, K> | F>
 export function get<
     O extends { [k: string]: any | undefined },
     K extends KeyOf<O>,
-    F extends Partial<ValueOf<O, K>> = ValueOf<O, K>
+    F extends ValueOf<O, K> | Partial<ValueOf<O, K>> = ValueOf<O, K>
 >(obj: O | undefined | null, key: [K], fallback?: F): ValueOf<O, K> | F
 
 export function get<O, T>(obj: O, key: Array<string | number>, fallback?: T): any | T {
