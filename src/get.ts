@@ -65,11 +65,7 @@ export function get<
         ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>,
         K4
     >
->(
-    obj: O | undefined | null,
-    key: [K1, K2, K3, K4],
-    fallback?: F
-): ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4> | F
+>(obj: O | undefined | null, key: [K1, K2, K3, K4], fallback?: F): ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4> | F
 
 // Three arguments
 export function get<
@@ -77,10 +73,7 @@ export function get<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
-        ValueOf<ValueOf<O, K1>, K2>,
-        K3
-    >
+    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>
 >(
     obj: O | undefined | null,
     key: [K1, K2, K3],
@@ -91,15 +84,8 @@ export function get<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
-        ValueOf<ValueOf<O, K1>, K2>,
-        K3
-    >
->(
-    obj: O | undefined | null,
-    key: [K1, K2, K3],
-    fallback?: F
-): ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3> | F
+    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>
+>(obj: O | undefined | null, key: [K1, K2, K3], fallback?: F): ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3> | F
 
 // Two arguments
 export function get<
@@ -107,11 +93,7 @@ export function get<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     F extends Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<ValueOf<O, K1>, K2>
->(
-    obj: O | undefined | null,
-    key: [K1, K2],
-    fallback: NonNullable<F>
-): NonNullable<ValueOf<ValueOf<O, K1>, K2> | F>
+>(obj: O | undefined | null, key: [K1, K2], fallback: NonNullable<F>): NonNullable<ValueOf<ValueOf<O, K1>, K2> | F>
 export function get<
     O extends { [k: string]: any | undefined },
     K1 extends KeyOf<O>,

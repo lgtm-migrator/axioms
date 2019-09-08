@@ -29,9 +29,7 @@ export function varget<
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
     K4 extends KeyOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>>,
     K5 extends KeyOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>>,
-    F extends
-        | Partial<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>>
-        | undefined = undefined
+    F extends Partial<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5>> | undefined = undefined
 >(
     obj: O | undefined | null,
     key: [K1, K2, K3, K4, K5],
@@ -61,11 +59,7 @@ export function varget<
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
     K4 extends KeyOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>>,
     F extends Partial<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>> | undefined = undefined
->(
-    obj: O | undefined | null,
-    key: [K1, K2, K3, K4],
-    fallback?: F
-): ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4> | F
+>(obj: O | undefined | null, key: [K1, K2, K3, K4], fallback?: F): ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4> | F
 
 // Three arguments
 export function varget<
@@ -73,10 +67,7 @@ export function varget<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
-    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<
-        ValueOf<ValueOf<O, K1>, K2>,
-        K3
-    >
+    F extends Partial<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>> = ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>
 >(
     obj: O | undefined | null,
     key: [K1, K2, K3],
@@ -102,11 +93,7 @@ export function varget<
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     F extends Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<ValueOf<O, K1>, K2>
->(
-    obj: O | undefined | null,
-    key: [K1, K2],
-    fallback: NonNullable<F>
-): NonNullable<ValueOf<ValueOf<O, K1>, K2> | F>
+>(obj: O | undefined | null, key: [K1, K2], fallback: NonNullable<F>): NonNullable<ValueOf<ValueOf<O, K1>, K2> | F>
 export function varget<
     O extends { [k: string]: any | undefined },
     K1 extends KeyOf<O>,

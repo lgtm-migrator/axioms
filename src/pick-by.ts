@@ -1,9 +1,6 @@
 import { isDefined } from './is-defined'
 
-export function pickBy<O extends object>(
-    obj: O | undefined,
-    pickIf: (v: O[typeof k], k: keyof O) => boolean
-): Partial<O> {
+export function pickBy<O extends object>(obj: O | undefined, pickIf: (v: O[typeof k], k: keyof O) => boolean): Partial<O> {
     if (!isDefined(obj)) {
         return {}
     }
