@@ -5,19 +5,23 @@
     "type": "git",
     "url": "https://github.com/Zefiros-Software/axioms.git"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "version": "0.1.6",
   "description": "Library with axioms for writing Typescript/Javascript",
   "scripts": {
-    "build": "tsc -p tsconfig.dist.json",
-    "test": "tsc && jest test",
+    "build": "yarn ttsc -p tsconfig.dist.json",
+    "test": "yarn ttsc && jest test",
     "fix": "yarn lint --fix",
     "lint": "tslint --project tsconfig.json",
     "release": "yarn standard-version -a",
     "release:dry": "yarn release --dry-run",
-    "package": "rm -r dist && yarn build && find dist -type f -regex '.*.js.map' -exec sed -i.bak 's|../src|./src|g' {} \\; && find dist -type f -regex '.*.bak' -exec rm {} \\; && cp -r package.json LICENSE CHANGELOG.md README.md src dist/"
+    "package": "rm -rf dist && yarn build"
   },
   "dependencies": {},
   "devDependencies": {
-    "@zefiros/npm-defaults": "^0.1.4"
+    "@types/lodash": "^4.14.138",
+    "@zefiros/npm-defaults": "^0.1.19",
+    "lodash": "^4.17.15"
   }
 }
