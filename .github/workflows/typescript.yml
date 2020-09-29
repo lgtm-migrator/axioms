@@ -14,7 +14,7 @@ jobs:
       uses: actions/setup-node@master
       with:
         node-version: 12
-    - run: npm install -g yarn yalc codecov
+    - run: npm install -g yarn codecov
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
