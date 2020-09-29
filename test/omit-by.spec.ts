@@ -17,12 +17,12 @@ test('can filter based on key', () => {
 })
 
 test('can filter based on value', () => {
-    expect(omitBy({ foo: 'bar', bar: 'foo' }, v => v === 'foo')).toEqual({ foo: 'bar' })
+    expect(omitBy({ foo: 'bar', bar: 'foo' }, (v) => v === 'foo')).toEqual({ foo: 'bar' })
 })
 
 test('creates shallow clone of the object', () => {
     const orig = { foo: 'bar', bar: 'foo' }
-    const filtered = omitBy(orig, v => v === 'foo')
+    const filtered = omitBy(orig, (v) => v === 'foo')
     orig.foo = 'foo'
     expect(filtered).toEqual({ foo: 'bar' })
 })

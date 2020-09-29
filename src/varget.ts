@@ -1,13 +1,17 @@
 import { isDefined } from './is-defined'
 
-export type KeyOf<O> = O extends any[] ? number : (O extends { [k: string]: any } ? keyof O : never)
+export type KeyOf<O> = O extends unknown[] ? number : O extends { [k: string]: unknown } ? keyof O : never
 export type ValueOf<O, K extends KeyOf<O>> = O extends undefined | null
     ? undefined
-    : (O extends Array<infer I> ? I | undefined : (K extends keyof O ? O[K] : undefined))
+    : O extends Array<infer I>
+    ? I | undefined
+    : K extends keyof O
+    ? O[K]
+    : undefined
 
 // Five arguments
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
@@ -23,7 +27,7 @@ export function varget<
     fallback: NonNullable<F>
 ): NonNullable<ValueOf<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4>, K5> | F>
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
@@ -38,7 +42,7 @@ export function varget<
 
 // Four arguments
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
@@ -53,7 +57,7 @@ export function varget<
     fallback: NonNullable<F>
 ): NonNullable<ValueOf<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3>, K4> | F>
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
@@ -63,7 +67,7 @@ export function varget<
 
 // Three arguments
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
@@ -74,7 +78,7 @@ export function varget<
     fallback: NonNullable<F>
 ): NonNullable<ValueOf<ValueOf<ValueOf<O, K1>, K2>, K3> | F>
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     K3 extends KeyOf<ValueOf<ValueOf<O, K1>, K2>>,
@@ -89,13 +93,13 @@ export function varget<
 
 // Two arguments
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     F extends Partial<ValueOf<ValueOf<O, K1>, K2>> = ValueOf<ValueOf<O, K1>, K2>
 >(obj: O | undefined | null, key: [K1, K2], fallback: NonNullable<F>): NonNullable<ValueOf<ValueOf<O, K1>, K2> | F>
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K1 extends KeyOf<O>,
     K2 extends KeyOf<ValueOf<O, K1>>,
     F extends Partial<ValueOf<ValueOf<O, K1>, K2>> | undefined = undefined
@@ -103,23 +107,23 @@ export function varget<
 
 // Single argument
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K extends KeyOf<O>,
     F extends Partial<ValueOf<O, K>> = ValueOf<O, K>
 >(obj: O | undefined | null, key: [K], fallback: NonNullable<F>): NonNullable<ValueOf<O, K> | F>
 export function varget<
-    O extends { [k: string]: any | undefined },
+    O extends { [k: string]: unknown | undefined },
     K extends KeyOf<O>,
     F extends Partial<ValueOf<O, K>> | undefined = undefined
 >(obj: O | undefined | null, key: [K], fallback?: F): ValueOf<O, K> | F
 
-export function varget<O, K extends string | number>(obj: O, k: K[] | string, fallback?: any): any
+export function varget<O, K extends string | number>(obj: O, k: K[] | string, fallback?: unknown): unknown
 
-export function varget<O, F>(obj: O, key: Array<string | number> | string, fallback?: F): any {
-    let out: any = obj
+export function varget<O, F>(obj: O, key: Array<string | number> | string, fallback?: F): unknown {
+    let out: unknown | undefined = obj
     for (const k of key) {
-        if (isDefined(out) && typeof out === 'object' && k in out) {
-            out = out[k]
+        if (typeof out === 'object' && isDefined(out) && k in out) {
+            out = ((out as unknown) as Record<string | number, unknown | undefined>)[k]
         } else {
             return fallback
         }

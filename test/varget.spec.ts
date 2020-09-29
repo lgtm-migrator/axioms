@@ -1,7 +1,7 @@
 import { varget } from '~/varget'
 
 test('varget on undefined returns undefined', () => {
-    const x: { foo: string } | undefined = undefined as any
+    const x: { foo: string } | undefined = undefined
     expect(varget(x, ['foo'])).toEqual(undefined)
 })
 test('varget on null returns undefined', () => {
@@ -10,12 +10,12 @@ test('varget on null returns undefined', () => {
 })
 
 test('varget on string returns undefined', () => {
-    const x: { foo: string } = 'foo' as any
+    const x: { foo: string } = ('foo' as unknown) as { foo: string }
     expect(varget(x, ['foo'])).toEqual(undefined)
 })
 
-test('varget on any returns value', () => {
-    const x: any = { foo: { bar: 'yay' } }
+test('varget on unknown returns value', () => {
+    const x: unknown = { foo: { bar: 'yay' } }
     expect(varget(x, ['foo', 'bar'])).toEqual('yay')
 })
 

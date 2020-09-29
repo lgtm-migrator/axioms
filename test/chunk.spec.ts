@@ -5,7 +5,10 @@ test('simple chunk function', () => {
 })
 
 test('simple chunk function, other offset 3', () => {
-    expect(chunk([1, 2, 3, 4, 5], 3)).toEqual([[1, 2, 3], [4, 5]])
+    expect(chunk([1, 2, 3, 4, 5], 3)).toEqual([
+        [1, 2, 3],
+        [4, 5],
+    ])
 })
 
 test('simple chunk function, other offset 5', () => {

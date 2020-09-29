@@ -16,12 +16,12 @@ test('can filter based on key', () => {
 })
 
 test('can filter based on value', () => {
-    expect(pickBy({ foo: 'bar', bar: 'foo' }, v => v === 'foo')).toEqual({ bar: 'foo' })
+    expect(pickBy({ foo: 'bar', bar: 'foo' }, (v) => v === 'foo')).toEqual({ bar: 'foo' })
 })
 
 test('creates shallow clone of the object', () => {
     const orig = { foo: 'bar', bar: 'foo' }
-    const filtered = pickBy(orig, v => v === 'foo')
+    const filtered = pickBy(orig, (v) => v === 'foo')
     orig.bar = 'bar'
     expect(filtered).toEqual({ bar: 'foo' })
 })

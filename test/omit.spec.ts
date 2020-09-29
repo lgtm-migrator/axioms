@@ -1,7 +1,7 @@
 import { omit } from '~/omit'
 
 test('undefined gives empty object', () => {
-    const foo: { foo: string } | undefined = undefined as any
+    const foo: { foo: string } | undefined = undefined
     expect(omit(foo, 'foo')).toEqual({})
 })
 

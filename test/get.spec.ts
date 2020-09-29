@@ -1,20 +1,21 @@
 import { get } from '~/get'
 
 test('get on undefined returns undefined', () => {
-    const x: { foo: string } | undefined = undefined as any
+    const x: { foo: string } | undefined = (undefined as unknown) as { foo: string } | undefined
     expect(get(x, ['foo'])).toEqual(undefined)
 })
 test('get on null returns undefined', () => {
-    const x: { foo: string } | null = null
+    const x: { foo: string } | null = (null as unknown) as { foo: string } | null
     expect(get(x, ['foo'])).toEqual(undefined)
 })
 
 test('get on string returns undefined', () => {
-    const x: { foo: string } = 'foo' as any
+    const x: { foo: string } = ('foo' as unknown) as { foo: string }
     expect(get(x, ['foo'])).toEqual(undefined)
 })
 
 test('get on any returns value', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const x: any = { foo: { bar: 'yay' } }
     expect(get(x, ['foo', 'bar'])).toEqual('yay')
 })

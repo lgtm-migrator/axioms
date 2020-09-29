@@ -21,7 +21,7 @@ test('object is not string', () => {
 })
 
 test('typeguard works', () => {
-    const foo: string | number = 'foo' as any
+    const foo: string | number = 'foo'
     if (isString(foo)) {
         expect(foo.length).toEqual(3)
     }

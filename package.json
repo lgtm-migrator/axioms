@@ -5,23 +5,42 @@
     "type": "git",
     "url": "https://github.com/Zefiros-Software/axioms.git"
   },
-  "main": "./dist/index.js",
+  "main": "./dist/main.js",
   "types": "./dist/index.d.ts",
   "version": "0.1.6",
   "description": "Library with axioms for writing Typescript/Javascript",
   "scripts": {
-    "build": "yarn ttsc -p tsconfig.dist.json",
-    "test": "yarn ttsc && jest test",
+    "build": "webpack --version && webpack",
+    "test": "concurrently \"yarn check:types\" \"jest test --maxWorkers=1\"",
     "fix": "yarn lint --fix",
-    "lint": "tslint --project tsconfig.json",
-    "release": "yarn standard-version -a",
+    "lint": "yarn eslint \"{src,test,typing}/**/*.{ts,js}\" --ignore-pattern **/node_modules/* --resolve-plugins-relative-to .",
+    "release": "semantic-release",
     "release:dry": "yarn release --dry-run",
-    "package": "rm -rf dist && yarn build"
+    "package": "rm -rf dist && yarn build",
+    "check:cost": "npx cost-of-modules --yarn --no-install --include-dev",
+    "check:types": "yarn tsc -p tsconfig.json",
+    "check:project": "yarn npm-defaults lint",
+    "coverage": "jest test --maxWorkers=1 --collectCoverage=true",
+    "lint:full": "bash -c \"FULL_LINT=true yarn lint\"",
+    "format": "prettier \"{src/*,test/*,typing/*,templates/*,examples/*,}*/*.{ts,js,json}\" --write"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/lodash": "^4.14.138",
-    "@zefiros/npm-defaults": "^0.1.19",
-    "lodash": "^4.17.15"
-  }
+    "@zefiros/npm-defaults": "^0.2.0-beta.63",
+    "lodash": "^4.17.15",
+    "typescript": "^4.0.2"
+  },
+  "npm-defaults": {
+    "type": "library",
+    "template": {
+      "exclude": [
+        ".eslintrc.js"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "package.json"
+  ]
 }

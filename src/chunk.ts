@@ -1,4 +1,4 @@
-export function chunk<T>(arr: Readonly<T[]>, size: number = 1): T[][] {
+export function chunk<T>(arr: Readonly<T[]>, size = 1): T[][] {
     size = Math.max(size, 1)
     const cache: T[][] = []
     const tmp = [...arr]

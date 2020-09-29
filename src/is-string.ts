@@ -1,3 +1,3 @@
-export function isString(x: string | any): x is string {
+export function isString(x: string | unknown): x is string {
     return typeof x === 'string'
 }
