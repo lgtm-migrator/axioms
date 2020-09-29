@@ -30,7 +30,9 @@ jobs:
         export PATH="$(yarn global bin):$PATH"
         yarn install
         yarn npm-defaults env --install
-        yarn npm-defaults ci
+        yarn npm-defaults lint
+        concurrently 'yarn lint' 'yarn build' 'yarn check:types'
+        yarn coverage
       env:
         CI: true
     - name: coverage
