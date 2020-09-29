@@ -1,3 +1,10 @@
+# [0.2.0-beta.2](https://github.com/Zefiros-Software/axioms/compare/v0.2.0-beta.1...v0.2.0-beta.2) (2020-09-29)
+
+
+### Features
+
+* **first:** implement first function ([#36](https://github.com/Zefiros-Software/axioms/issues/36)) ([9904973](https://github.com/Zefiros-Software/axioms/commit/9904973b168b40eceaf9653b3cb0a7300194ee26))
+
 # [0.2.0-beta.1](https://github.com/Zefiros-Software/axioms/compare/v0.1.6...v0.2.0-beta.1) (2020-09-29)
 
 
