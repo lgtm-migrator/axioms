@@ -14,7 +14,6 @@ jobs:
       uses: actions/setup-node@master
       with:
         node-version: 12
-    - run: npm install -g yarn codecov
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: |
@@ -29,6 +28,7 @@ jobs:
         key: ${{ runner.os }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
+    - run: npm install -g yarn codecov
     - name: yarn install, build, and test
       run: |
         export PATH="$(yarn global bin):$PATH"
