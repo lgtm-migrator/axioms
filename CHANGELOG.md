@@ -1,3 +1,23 @@
+# [0.2.0-beta.1](https://github.com/Zefiros-Software/axioms/compare/v0.1.6...v0.2.0-beta.1) (2020-09-29)
+
+
+### Bug Fixes
+
+* expand npm-defaults ci command ([0c49ca7](https://github.com/Zefiros-Software/axioms/commit/0c49ca77d67301efb765af1097a18b4a5b60aba4))
+
+
+### Features
+
+* update actions ([472f6a7](https://github.com/Zefiros-Software/axioms/commit/472f6a752d194ac5502eb14db225ced729e57a8c))
+* **chunk:** implement chunk function ([#3](https://github.com/Zefiros-Software/axioms/issues/3)) ([d7f7b7b](https://github.com/Zefiros-Software/axioms/commit/d7f7b7b6bd47356ec1a1ba7421707fdf649ed0fd))
+* **cicd:** add cicd pipeline ([88d37bf](https://github.com/Zefiros-Software/axioms/commit/88d37bf5285f1fdab3710fda59acd128fa09b0d4))
+* **compact:** implement compact function ([#4](https://github.com/Zefiros-Software/axioms/issues/4)) ([528ad68](https://github.com/Zefiros-Software/axioms/commit/528ad68cf9f99d552a5a287f8d9cf1d4372b58fd))
+* **difference:** implement difference function ([#6](https://github.com/Zefiros-Software/axioms/issues/6)) ([19f7f56](https://github.com/Zefiros-Software/axioms/commit/19f7f561eae3dbc395d1038dddeab1485c109fad))
+* **drop:** implement drop function ([#7](https://github.com/Zefiros-Software/axioms/issues/7)) ([372eaad](https://github.com/Zefiros-Software/axioms/commit/372eaadd81c70cbde0bc60ac9856404657ce6a5d))
+* **drop-right:** implement dropRight function ([#8](https://github.com/Zefiros-Software/axioms/issues/8)) ([473f185](https://github.com/Zefiros-Software/axioms/commit/473f18513e463f5c634384068a600f2a54e6e267))
+* **fill:** implement fill function ([#9](https://github.com/Zefiros-Software/axioms/issues/9)) ([abec53a](https://github.com/Zefiros-Software/axioms/commit/abec53af6a7889ce36ace3930ceab6d54afcf88e))
+* **snyk:** add snyk checks ([2594313](https://github.com/Zefiros-Software/axioms/commit/2594313df201b559c61eafd5eac6646c560cab48))
+
 # Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
