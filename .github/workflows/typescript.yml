@@ -10,34 +10,42 @@ jobs:
     - uses: actions/checkout@master
       with:
         fetch-depth: 1
-    - name: Use Node.js 10
+    - name: Use Node.js 12
       uses: actions/setup-node@master
       with:
-        node-version: 10
-    - run: npm install -g yarn codecov snyk
+        node-version: 12
+    - run: npm install -g yarn yalc codecov
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-cache-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
     - name: yarn install, build, and test
       run: |
+        export PATH="$(yarn global bin):$PATH"
         yarn install
-        yarn lint
-        yarn build
-        yarn test
+        yarn npm-defaults env --install
+        yarn npm-defaults ci
       env:
         CI: true
     - name: coverage
       run: codecov
       env:
         CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
-    - name: snyk
-      run: snyk test && snyk monitor
-      env:
-        SNYK_TOKEN: ${{secrets.SNYK_TOKEN}}
     - name: release
-      if: github.ref == 'refs/heads/master' && !github.event.release
+      if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/master'
       run: |
-        git config --global user.name 'Hoid'
-        git config --global user.email 'hoid@zefiros.io'
-        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        yarn release
-        git push --follow-tags origin HEAD:refs/heads/master 
+         yarn npm-defaults release
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+    - name: create pull request
+      if: github.ref == 'refs/heads/development'
+      run: yarn npm-defaults make-release
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
