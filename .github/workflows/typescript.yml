@@ -31,10 +31,10 @@ jobs:
     - run: npm install -g yarn codecov
     - name: yarn install, build, and test
       run: |
-        export PATH="$(yarn global bin):$PATH"
+        export PATH="$(yarn bin):$(yarn global bin):$PATH"
         yarn install
-        yarn npm-defaults env --install
-        yarn npm-defaults ci
+        npm-defaults env --install
+        npm-defaults ci
       env:
         CI: true
     - name: coverage
@@ -44,7 +44,7 @@ jobs:
     - name: release
       if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/master'
       run: |
-         yarn npm-defaults release
+        yarn npm-defaults release
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         NPM_TOKEN: ${{secrets.NPM_TOKEN}}
