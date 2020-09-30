@@ -1336,10 +1336,10 @@
     "@typescript-eslint/types" "4.1.0"
     eslint-visitor-keys "^2.0.0"
 
-"@zefiros/npm-defaults@^0.2.0-beta.63":
-  version "0.2.0-beta.63"
-  resolved "https://registry.yarnpkg.com/@zefiros/npm-defaults/-/npm-defaults-0.2.0-beta.63.tgz#e43d977891ab90148c54978a39226d8795e92ad3"
-  integrity sha512-QImVdyLrTCflyhGyZHAAAYtAszTRVcFmWk2J0JB0kiOPdMtPFjHIKJLiNTrBYw8DGejLuX6OZw6Tvjm8j1m1Ww==
+"@zefiros/npm-defaults@^0.2.0-beta.64":
+  version "0.2.0-beta.64"
+  resolved "https://registry.yarnpkg.com/@zefiros/npm-defaults/-/npm-defaults-0.2.0-beta.64.tgz#285b86e593d408dfbc140897806382bec265b5f5"
+  integrity sha512-/lDe63/GjnEWPfmFJMA9XZgRN6ggBrV6LqyEChHjv3g19IVNtfi7Hlk3MJHpgzwI/QMRuH+Iu4aISYZWyu3rmQ==
   dependencies:
     "@babel/core" "^7.11.6"
     "@babel/preset-env" "^7.11.5"
@@ -1350,6 +1350,7 @@
     "@typescript-eslint/eslint-plugin" "4.1.0"
     "@typescript-eslint/parser" "4.1.0"
     "@zerollup/ts-transform-paths" "^1.7.18"
+    date-fns "^2.16.1"
     eslint "^7.8.1"
     eslint-config-prettier "^6.11.0"
     eslint-import-resolver-typescript "^2.3.0"
@@ -1993,6 +1994,11 @@ data-urls@^2.0.0:
     abab "^2.0.3"
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
+
+date-fns@^2.16.1:
+  version "2.16.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
 debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   version "2.6.9"
