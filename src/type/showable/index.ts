@@ -1,0 +1,1 @@
+export { Showable } from './showable'
