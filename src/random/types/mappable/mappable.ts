@@ -5,16 +5,17 @@ import type { Dependent } from '../../arbitrary'
 import { makeDependent } from '../../arbitrary'
 import { integer } from '../integer'
 
-type MappableFunc = <T>(m: Mappable<T>) => Mappable<T>
+type ToMappable<Xs extends Mappable<unknown>> = Xs extends Mappable<infer T, infer R> ? Mappable<T, R> : never
+type MappableFunc = <Xs extends Mappable<unknown>>(m: Xs) => ToMappable<Xs>
 const mappableFuncs: MappableFunc[] = [
-    (xs) => [...toTraversable(xs)],
+    <Xs extends Mappable<unknown>>(xs: Xs) => [...toTraversable(xs)] as unknown as ToMappable<Xs>,
     toTraversable,
     toTraverser,
-    toGenerator,
-    (xs) =>
+    <Xs extends Mappable<unknown>>(xs: Xs) => toGenerator<Xs, never>(xs) as unknown as ToMappable<Xs>,
+    <Xs extends Mappable<unknown>>(xs: Xs) =>
         function* () {
             yield* toTraversable(xs)
-        },
+        } as ToMappable<Xs>,
 ]
 export function mappableFunc(): Dependent<MappableFunc> {
     const aint = integer({ min: 0, max: mappableFuncs.length })

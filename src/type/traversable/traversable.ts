@@ -4,33 +4,39 @@ export type Traversable<T, R = unknown> = {
 }
 export type Mappable<T, R = unknown> = Traversable<T, R> | Traverser<T, R> | (() => Generator<T, R, void>)
 
-export function toTraverser<T, R>(xs: Mappable<T, R>): Traverser<T, R> {
+export type ToTraverser<Xs extends Mappable<unknown, unknown>> = Xs extends Mappable<infer T, infer R> ? Traverser<T, R> : never
+export function toTraverser<Xs extends Mappable<unknown, unknown>>(xs: Xs): ToTraverser<Xs> {
     //return isIterable(xs) ? xs[Symbol.iterator]() : isGeneratorFunction(xs) ? xs() : xs
     // inlined
     if (typeof xs === 'string' || Symbol.iterator in xs) {
-        return (xs as Traversable<T, R>)[Symbol.iterator]()
+        return (xs as Traversable<unknown, unknown>)[Symbol.iterator]() as ToTraverser<Xs>
     } else if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
-        return xs()
+        return xs() as unknown as ToTraverser<Xs>
     }
-    return xs as Traverser<T, R>
+    return xs as unknown as ToTraverser<Xs>
 }
 
-export function toTraversable<T, R>(xs: Mappable<T, R>): Traversable<T, R> {
+export type ToTraversable<Xs extends Mappable<unknown, unknown>> = Xs extends Mappable<infer T, infer R>
+    ? Traversable<T, R>
+    : never
+export function toTraversable<Xs extends Mappable<unknown, unknown>>(xs: Xs): ToTraversable<Xs> {
     //return isIterable(xs) ? xs : isGeneratorFunction(xs) ? xs() : { [Symbol.iterator]: () => xs }
     // inlined
     if (typeof xs === 'string' || Symbol.iterator in xs) {
-        return xs as Traversable<T, R>
+        return xs as unknown as ToTraversable<Xs>
     } else if (typeof xs === 'function' && xs.constructor !== null && xs.constructor.name === 'GeneratorFunction') {
-        return xs()
+        return xs() as unknown as ToTraversable<Xs>
     }
-    return { [Symbol.iterator]: () => xs } as Traversable<T, R>
+    return { [Symbol.iterator]: () => xs } as ToTraversable<Xs>
 }
 
-export function lazy<T, R>(xs: () => Traversable<T, R>): Traversable<T, R> {
-    return { [Symbol.iterator]: () => toTraverser(xs()) }
+export function lazy<Xs extends Traversable<unknown, unknown>>(xs: () => Xs): Xs {
+    return { [Symbol.iterator]: () => toTraverser(xs()) } as unknown as Xs
 }
 
-export function* toGenerator<T, R = unknown>(xs: Mappable<T>, returnValue?: R): Traversable<T, R> {
+export type ToGenerator<Xs extends Mappable<unknown, unknown>, R> = Xs extends Mappable<infer T> ? Traversable<T, R> : never
+export function toGenerator<Xs extends Mappable<unknown, unknown>, R = unknown>(xs: Xs, returnValue?: R): ToGenerator<Xs, R>
+export function* toGenerator<Xs extends Mappable<unknown, unknown>, R = unknown>(xs: Xs, returnValue?: R) {
     yield* toTraversable(xs)
     return returnValue as R
 }
