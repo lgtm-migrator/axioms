@@ -42,7 +42,7 @@ export function eitherAsValue<L, R>(x: Either<L, R>): L | R {
 
 export function maybeAsValue<T>(x: Exclude<Maybe<T>, Nothing>): T
 export function maybeAsValue(x: Nothing): undefined
-export function maybeAsValue<T>(x: Maybe<T>): T | undefined
-export function maybeAsValue<T>(x: Maybe<T>): T | undefined {
+export function maybeAsValue<T>(x: Maybe<T>): Exclude<Maybe<T>, Nothing> | undefined
+export function maybeAsValue<T>(x: Maybe<T>): Exclude<Maybe<T>, Nothing> | undefined {
     return isJust(x) ? x : undefined
 }
