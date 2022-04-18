@@ -1,3 +1,15 @@
+# [1.0.0-beta.4](https://github.com/zefiros-software/axioms/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-04-18)
+
+
+### Bug Fixes
+
+* **require-keys:** fix key constraint ([#88](https://github.com/zefiros-software/axioms/issues/88)) ([77bb990](https://github.com/zefiros-software/axioms/commit/77bb99056f80abbe11f6ba29d89a93da14492376))
+
+
+### Features
+
+* **is-tuple:** implement tuple typeguard ([#86](https://github.com/zefiros-software/axioms/issues/86)) ([c1e41dc](https://github.com/zefiros-software/axioms/commit/c1e41dc1ff4e2f4c18b2c630eb06431f6a87d91e))
+
 # [1.0.0-beta.3](https://github.com/Zefiros-Software/axioms/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-03-03)
 
 
