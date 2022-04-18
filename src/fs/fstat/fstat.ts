@@ -6,13 +6,13 @@ import { Nothing } from '../../type/maybe'
 import type { Stats } from 'fs'
 import { promises } from 'fs'
 
-export async function fstat<E = Error>(file: string): Promise<Maybe<Either<E, Maybe<Stats>>>> {
+export async function fstat(file: string): Promise<Either<unknown, Maybe<Stats>>> {
     try {
         return { right: await promises.stat(file) }
     } catch (error) {
-        if (isObject(error) && 'code' in error && error.code !== 'ENOENT') {
-            return { left: error as E }
+        if (!isObject(error) || !('code' in error) || error.code !== 'ENOENT') {
+            return { left: error }
         }
     }
-    return Nothing
+    return { right: Nothing }
 }
