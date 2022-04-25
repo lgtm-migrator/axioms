@@ -3,8 +3,8 @@
   "description": "Library with axioms for writing Typescript/Javascript",
   "version": "1.0.0-beta.4",
   "license": "MIT",
-  "main": ".dist/main.js",
-  "types": ".dist/index.d.ts",
+  "main": ".main.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/zefiros-software/axioms.git"
@@ -15,12 +15,10 @@
   "engines": {
     "node": ">=14"
   },
-  "files": [
-    ".dist",
-    "package.json"
-  ],
+  "files": [".main.js", ".main.js.map", "index.d.ts", "src/**/*.d.ts", "package.json"],
   "scripts": {
-    "build": "npx webpack --version && npx webpack",
+    "build": "npx ts-node esbuild.config.ts",
+    "build:clean": "npx tsc --build --clean && rm .main.js && rm .main.js.map",
     "check:cost": "npx cost-of-modules --no-install --include-dev",
     "check:coverage": "npx jest --collectCoverage=true",
     "check:full": "npm run lint && npm run check:types && npm run check:coverage && npm run build && npm run check:project",
@@ -31,13 +29,14 @@
     "lint": "npx eslint \"{src,test,typing}/**/*.{ts,js}\" --no-eslintrc --cache -c .eslintrc.js --ignore-path .gitignore",
     "lint:full": "bash -c \"FULL_LINT=true npm run lint\"",
     "package": "rm -rf .dist && npm run build",
+    "prepare": "npx husky install || true",
     "test": "npx jest"
   },
   "devDependencies": {
     "@zefiros-software/node-standards": "next",
     "date-fns": "^2.28.0",
     "jest-extended": "^1.2.0",
-    "typescript": "^4.5.4"
+    "typescript": "^4.6.3"
   },
   "dependencies": {
     "fast-deep-equal": "^3.1.3",
