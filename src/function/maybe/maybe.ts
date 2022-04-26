@@ -33,13 +33,6 @@ export function maybeToLeft<L, R>(right: R, x: Maybe<L>): Either<L, R> {
     return isJust(x) ? { left: x } : { right }
 }
 
-export function eitherAsValue<L>(x: Left<L>): L
-export function eitherAsValue<R>(x: Right<R>): R
-export function eitherAsValue<L, R>(x: Either<L, R>): L | R
-export function eitherAsValue<L, R>(x: Either<L, R>): L | R {
-    return 'left' in x ? x.left : x.right
-}
-
 export function maybeAsValue<T>(x: Exclude<Maybe<T>, Nothing>): T
 export function maybeAsValue(x: Nothing): undefined
 export function maybeAsValue<T>(x: Maybe<T>): Exclude<Maybe<T>, Nothing> | undefined
