@@ -1,5 +1,5 @@
 import { map } from '../../iterator'
-import type { Maybe, Obj, Traversable } from '../../type'
+import type { Maybe, Traversable } from '../../type'
 import { Nothing } from '../../type'
 import { disjointSet } from '../disjoint-set'
 import { queue } from '../queue'
@@ -23,7 +23,7 @@ interface DiscoveryMarker<T> {
     has(value: GraphNode<T>): boolean
 }
 
-export class Graph<T extends Obj<T>, E = never> {
+export class Graph<T, E = never> {
     private readonly _nodes: Record<GraphNodeName, GraphNode<T>> = {} as Record<GraphNodeName, GraphNode<T>>
     private readonly _fromToAdjacency: Record<GraphNodeName, Record<GraphNodeName, GraphEdge<T, E>>> = {} as Record<
         GraphNodeName,

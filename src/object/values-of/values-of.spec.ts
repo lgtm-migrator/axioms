@@ -28,8 +28,8 @@ test('valuesOf union object and array', () => {
     forAll(oneOf(array(string()), dict([integer(), integer()])), (o) => {
         expect(valuesOf(o)).toStrictEqual(Object.values(o))
     })
-    const _foo: number = valuesOf([1, 2, 3])
-    const _foo2: number | string = valuesOf([1, '2', 3])
+    const _foo: number[] = valuesOf([1, 2, 3])
+    const _foo2: (number | string)[] = valuesOf([1, '2', 3])
     const _foo3: 'bar'[] = valuesOf({ foo: 'bar' } as const)
-    const _foo4: string[] | number = valuesOf<number[] | { foo: string }>({ foo: 'bar' })
+    const _foo4: number[] | string[] = valuesOf<number[] | { foo: string }>({ foo: 'bar' })
 })

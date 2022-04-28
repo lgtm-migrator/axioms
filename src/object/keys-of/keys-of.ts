@@ -1,6 +1,6 @@
-import type { EmptyObj, KeyOf } from '../../type'
+import type { KeyOf } from '../../type'
 
-export function keysOf<T extends EmptyObj>(obj: T): T extends Array<infer _I> ? Array<string> : Array<KeyOf<T>> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return Object.keys(obj) as any
+export type KeysOf<T> = T extends Array<infer _I> ? Array<string> : Array<KeyOf<T>>
+export function keysOf<T>(obj: T): KeysOf<T> {
+    return Object.keys(obj) as KeysOf<T>
 }

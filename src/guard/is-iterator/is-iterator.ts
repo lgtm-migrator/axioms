@@ -1,5 +1,5 @@
-import type { Obj, Traverser } from '../../type'
+import type { Traverser } from '../../type'
 
-export function isIterator<T, R, O extends Obj<O>>(x: O | Traverser<T, R>): x is Traverser<T, R> {
+export function isIterator<T, R, O>(x: O | Traverser<T, R>): x is Traverser<T, R> {
     return x !== null && x !== undefined && typeof (x as Traverser<T, R>).next === 'function'
 }
