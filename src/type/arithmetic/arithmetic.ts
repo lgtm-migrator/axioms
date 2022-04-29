@@ -1,7 +1,5 @@
-type _BuildTuple<L extends number, T extends any[] = []> = T extends { length: L } ? T : _BuildTuple<L, [...T, any]>
+import type { BuildTuple } from '../tuple'
 
-export type Subtract<A extends number, B extends number> = _BuildTuple<A> extends [...infer R, ..._BuildTuple<B>]
-    ? R['length']
-    : 0
+export type Subtract<A extends number, B extends number> = BuildTuple<A> extends [...infer R, ...BuildTuple<B>] ? R['length'] : 0
 
-export type Add<A extends number, B extends number> = [..._BuildTuple<A>, ..._BuildTuple<B>]['length']
+export type Add<A extends number, B extends number> = [...BuildTuple<A>, ...BuildTuple<B>]['length']
