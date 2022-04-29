@@ -1,1 +1,1 @@
-export { mapLeft, mapRight, whenLeft, whenRight } from './either'
+export { mapLeft, mapLefts, mapRight, mapRights, whenLeft, whenLefts, whenRight, whenRights } from './either'
