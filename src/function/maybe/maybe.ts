@@ -2,40 +2,29 @@ import { isJust } from '../../guard/is-just'
 import { isLeft } from '../../guard/is-left'
 import { isRight } from '../../guard/is-right'
 import type { Either, Left, Right } from '../../type/either'
-import type { Just, Maybe } from '../../type/maybe'
+import type { Maybe } from '../../type/maybe'
 import { Nothing } from '../../type/maybe'
 
-export function leftToMaybe<R>(x: Right<R>): Nothing
-export function leftToMaybe<L>(x: Left<L>): Just<L>
-export function leftToMaybe<L, R>(x: Either<L, R>): Maybe<L>
-export function leftToMaybe<L, R>(x: Either<L, R>): Maybe<L> {
+export function leftToMaybe<T extends Either<any, any>>(x: T): Maybe<T extends Left<infer L> ? L : never> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return isLeft(x) ? x.left : Nothing
 }
 
-export function rightToMaybe<R>(x: Right<R>): Just<R>
-export function rightToMaybe<L>(x: Left<L>): Nothing
-export function rightToMaybe<L, R>(x: Either<L, R>): Maybe<R>
-export function rightToMaybe<L, R>(x: Either<L, R>): Maybe<R> {
+export function rightToMaybe<T extends Either<any, any>>(x: T): Maybe<T extends Right<infer R> ? R : never> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return isRight(x) ? x.right : Nothing
 }
 
-export function maybeToRight<L, R>(left: L, x: Just<R>): Right<R>
-export function maybeToRight<L>(left: L, x: Nothing): Left<L>
-export function maybeToRight<L, R>(left: L, x: Maybe<R>): Either<L, R>
-export function maybeToRight<L, R>(left: L, x: Maybe<R>): Either<L, R> {
-    return isJust(x) ? { right: x } : { left }
+export function maybeToRight<L, X>(left: L, x: X): Either<L, Exclude<X, Nothing>> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    return isJust(x) ? { right: x as any } : { left }
 }
 
-export function maybeToLeft<L, R>(right: R, x: Just<L>): Left<L>
-export function maybeToLeft<R>(right: R, x: Nothing): Right<R>
-export function maybeToLeft<L, R>(right: R, x: Maybe<L>): Either<L, R>
-export function maybeToLeft<L, R>(right: R, x: Maybe<L>): Either<L, R> {
-    return isJust(x) ? { left: x } : { right }
+export function maybeToLeft<X, R>(right: R, x: X): Either<Exclude<X, Nothing>, R> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    return isJust(x) ? { left: x as any } : { right }
 }
 
-export function maybeAsValue<T>(x: Exclude<Maybe<T>, Nothing>): T
-export function maybeAsValue(x: Nothing): undefined
-export function maybeAsValue<T>(x: Maybe<T>): Exclude<Maybe<T>, Nothing> | undefined
-export function maybeAsValue<T>(x: Maybe<T>): Exclude<Maybe<T>, Nothing> | undefined {
+export function maybeAsValue<X>(x: X): Exclude<X, Nothing> | undefined {
     return isJust(x) ? x : undefined
 }
