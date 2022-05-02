@@ -1,3 +1,4 @@
+import { isNothing } from '../../guard'
 import { isJust } from '../../guard/is-just'
 import { isLeft } from '../../guard/is-left'
 import { isRight } from '../../guard/is-right'
@@ -27,4 +28,27 @@ export function maybeToLeft<X, R>(right: R, x: X): Either<Exclude<X, Nothing>, R
 
 export function maybeAsValue<X>(x: X): Exclude<X, Nothing> | undefined {
     return isJust(x) ? x : undefined
+}
+
+export function whenJust<X, M>(f: (x: Exclude<X, Nothing>) => M, x: Maybe<X>): Maybe<M> {
+    return isJust(x) ? f(x) : Nothing
+}
+
+export type ArgJusts<Xs> = Xs extends [infer X, ...infer Rest]
+    ? [X extends infer J ? Exclude<J, Nothing> : never, ...ArgJusts<Rest>]
+    : Xs extends []
+    ? []
+    : Xs extends Array<infer I>
+    ? Array<I extends infer J ? Exclude<J, Nothing> : never>
+    : []
+export function whenJusts<Xs extends any[], M>(f: (...x: ArgJusts<Xs>) => M, xs: readonly [...Xs]): Maybe<M> {
+    const n = xs.find((x) => !isJust(x))
+    if (n !== undefined) {
+        return Nothing
+    }
+    return f(...(xs as unknown as ArgJusts<Xs>))
+}
+
+export function whenNothing<X, M>(f: () => M, x: Maybe<X>): M | X {
+    return isNothing(x) ? f() : x
 }
