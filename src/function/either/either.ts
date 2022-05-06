@@ -86,3 +86,14 @@ export function whenLefts<Xs extends Either<any, any>[], M>(
     }
     return f(...(xs.map((x) => (x as Left<unknown>).left) as ArgLefts<Xs>))
 }
+
+export function swapEither<L, R>(x: Either<L, R>): Either<R, L> {
+    return isLeft(x) ? { right: x.left } : { left: x.right }
+}
+
+export function eitherToError<L, R>(x: Either<L, R>): R {
+    if (isLeft(x)) {
+        throw x.left
+    }
+    return x.right
+}
