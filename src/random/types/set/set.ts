@@ -4,6 +4,7 @@ import { collect } from '../../../array/collect'
 import { concat } from '../../../iterator'
 import { equal } from '../../../iterator/equal'
 import { unique } from '../../../iterator/unique'
+import { difference } from '../../../set/difference'
 import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
 import { makeDependent } from '../../arbitrary/dependent'
@@ -46,10 +47,16 @@ export interface SubsuperGenerator<T> {
     eq: (a: T, b: T) => boolean
 }
 
-export function subsuper<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SubsuperGenerator<T>> = {}): Arbitrary<[T[], T[]]> {
+export function subsuper<T>(
+    arbitrary: Arbitrary<T>,
+    context: RelaxedPartial<SubsuperGenerator<T>> = {}
+): Arbitrary<[sub: T[], superset: T[], complement: T[]]> {
     const { minLength = 0, maxLength = 10, eq = equal } = context
     const sub = set(arbitrary, { minLength, maxLength, eq })
     const complement = set(arbitrary, { minLength, maxLength, eq })
     const pair = tuple(sub, complement)
-    return mapArbitrary(([xs, cs]) => [xs, collect(unique(concat(xs, cs), eq))], pair)
+    return mapArbitrary(([xs, cs]) => {
+        const superset = collect(unique(concat(xs, cs), eq))
+        return [xs, superset, [...difference(superset, xs)]]
+    }, pair)
 }

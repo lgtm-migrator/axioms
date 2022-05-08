@@ -1,1 +1,1 @@
-export { set } from './set'
+export { set, subsuper } from './set'
