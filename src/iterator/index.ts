@@ -1,6 +1,7 @@
 export * from './all'
 export * from './any'
 export * from './applicative'
+export * from './at'
 export * from './chunk'
 export * from './concat'
 export * from './drop'
