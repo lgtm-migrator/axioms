@@ -1,12 +1,20 @@
+import type { Tree } from '../../../algorithm/tree'
 import { filterTree } from '../../../algorithm/tree'
 import { collect } from '../../../array/collect'
+import { concat } from '../../../iterator'
 import { equal } from '../../../iterator/equal'
 import { unique } from '../../../iterator/unique'
 import type { RelaxedPartial } from '../../../type/partial'
 import type { Arbitrary } from '../../arbitrary/arbitrary'
 import { makeDependent } from '../../arbitrary/dependent'
 import { InfeasibleTree } from '../../arbitrary/shrink'
+import { mapArbitrary } from '../../arbitrary/transform'
 import { arrayWith } from '../array'
+import { tuple } from '../tuple'
+
+function uniqueArbitraryTree<T>(eq: (a: T, b: T) => boolean, vals: Tree<T[]>): Tree<T[]> {
+    return filterTree((x) => collect(unique(x, eq)).length === x.length, vals)
+}
 
 export interface SetGenerator<T> {
     minLength: number
@@ -28,6 +36,20 @@ export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGener
     )
     return makeDependent((ctx) => {
         // make sure we don't shrink to an array with duplicates
-        return filterTree((x) => collect(unique(x, eq)).length === x.length, aarray.value(ctx))
+        return uniqueArbitraryTree<T>(eq, aarray.value(ctx))
     })
+}
+
+export interface SubsuperGenerator<T> {
+    minLength: number
+    maxLength: number
+    eq: (a: T, b: T) => boolean
+}
+
+export function subsuper<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SubsuperGenerator<T>> = {}): Arbitrary<[T[], T[]]> {
+    const { minLength = 0, maxLength = 10, eq = equal } = context
+    const sub = set(arbitrary, { minLength, maxLength, eq })
+    const complement = set(arbitrary, { minLength, maxLength, eq })
+    const pair = tuple(sub, complement)
+    return mapArbitrary(([xs, cs]) => [xs, collect(unique(concat(xs, cs), eq))], pair)
 }
