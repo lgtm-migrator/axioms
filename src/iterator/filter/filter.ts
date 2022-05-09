@@ -11,15 +11,25 @@ export function* filter<T>(by: (x: T) => boolean, xs: Traversable<T>) {
     }
 }
 
-export function filterWithMemory<S extends T, T>(by: (x: T, xs: S[], i: number) => x is S, xs: Traversable<T>): Traversable<S>
-export function filterWithMemory<T>(by: (x: T, xs: T[], i: number) => boolean, xs: Traversable<T>): Traversable<T>
-export function* filterWithMemory<T>(by: (x: T, xs: T[], i: number) => boolean, xs: Traversable<T>) {
+export function filterWithMemory<S extends T, T>(
+    by: (x: T, xs: S[], i: number, skippedInRow: number) => x is S,
+    xs: Traversable<T>
+): Traversable<S>
+export function filterWithMemory<T>(
+    by: (x: T, xs: T[], i: number, skippedInRow: number) => boolean,
+    xs: Traversable<T>
+): Traversable<T>
+export function* filterWithMemory<T>(by: (x: T, xs: T[], i: number, skippedInRow: number) => boolean, xs: Traversable<T>) {
     const memory: T[] = []
     let i = 0
+    let skippedInRow = 0
     for (const x of xs) {
-        if (by(x, memory, i++)) {
+        if (by(x, memory, i++, skippedInRow)) {
             memory.push(x)
             yield x
+            skippedInRow = 0
+        } else {
+            skippedInRow += 1
         }
     }
 }

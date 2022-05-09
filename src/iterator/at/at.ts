@@ -4,12 +4,11 @@ import type { Maybe, Traversable } from '../../type'
 import { Nothing } from '../../type'
 import { drop } from '../drop'
 
-export function at<T extends any[]>(n: 0, xs: readonly [...T]): T extends [infer N0, ...unknown[]] ? N0 : Nothing
-export function at<T extends any[]>(n: 1, xs: readonly [...T]): T extends [unknown, infer N1, ...unknown[]] ? N1 : Nothing
-export function at<T extends any[]>(
-    n: 2,
-    xs: readonly [...T]
-): T extends [unknown, unknown, infer N2, ...unknown[]] ? N2 : Nothing
+export type Nth<N extends number, T> = T extends readonly any[] ? T[N] : never
+
+export function at<T>(n: 0, xs: T): T extends readonly [infer N0, ...unknown[]] ? N0 : Nothing
+export function at<T>(n: 1, xs: T): T extends readonly [unknown, infer N1, ...unknown[]] ? N1 : Nothing
+export function at<T>(n: 2, xs: T): T extends readonly [unknown, unknown, infer N2, ...unknown[]] ? N2 : Nothing
 export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Maybe<T>
 export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Maybe<T> {
     if (isArray<T>(xs)) {
@@ -19,19 +18,19 @@ export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Mayb
     return head(drop(n, xs))
 }
 
-export function first<T extends any[]>(xs: readonly [...T]): T extends [infer N0, ...unknown[]] ? N0 : Nothing
+export function first<T>(xs: T): T extends readonly [infer N0, ...unknown[]] ? N0 : Nothing
 export function first<T>(xs: Traversable<T>): Maybe<T>
 export function first<T>(xs: Traversable<T>): Maybe<T> {
     return at(0, xs)
 }
 
-export function second<T extends any[]>(xs: readonly [...T]): T extends [unknown, infer N1, ...unknown[]] ? N1 : Nothing
+export function second<T>(xs: readonly [unknown, T, ...unknown[]]): T
 export function second<T>(xs: Traversable<T>): Maybe<T>
 export function second<T>(xs: Traversable<T>): Maybe<T> {
     return at(1, xs)
 }
 
-export function third<T extends any[]>(xs: readonly [...T]): T extends [unknown, unknown, infer N2, ...unknown[]] ? N2 : Nothing
+export function third<T>(xs: readonly [unknown, unknown, T, ...unknown[]]): T
 export function third<T>(xs: Traversable<T>): Maybe<T>
 export function third<T>(xs: Traversable<T>): Maybe<T> {
     return at(2, xs)

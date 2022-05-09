@@ -38,7 +38,7 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
 }
 
 export function arrayWith<T>(
-    predicate: (x: T, xs: T[], i: number) => boolean,
+    predicate: (x: T, xs: T[], skippedInRow: number) => boolean,
     arbitrary: Arbitrary<T>,
     context: RelaxedPartial<ArrayGenerator<T>> = {}
 ): Arbitrary<T[]> {
@@ -64,11 +64,11 @@ export function arrayWith<T>(
                     size = aint.sample(ctx)
                 }
                 return replicateWithMemory(
-                    (x, xs, i) =>
+                    (x, xs, _i, skippedInRow) =>
                         predicate(
                             x.value,
                             xs.map((v) => v.value),
-                            i
+                            skippedInRow
                         ),
                     size,
                     biasedValue

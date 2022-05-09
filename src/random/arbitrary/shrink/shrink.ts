@@ -41,4 +41,6 @@ export function shrinkX<T>(xs: T[], p: number): T[] {
     return xs.slice(0, i)
 }
 
-export class InfeasibleTree extends Error {}
+export class InfeasibleTree extends Error {
+    public name = 'Tree is found infeasible'
+}

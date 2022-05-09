@@ -8,10 +8,20 @@ import { forAll } from '../../arbitrary/forall'
 import { unknown } from '../complex'
 import { integer } from '../integer'
 
-test('all unique - number', () => {
-    const size = 1000
-    forAll(set(integer({ min: 0, max: size })), (xs) => xs.length === collect(unique(xs)).length, { seed: 1638968569864n })
+describe('set', () => {
+    test('all unique - number', () => {
+        const size = 1000
+        forAll(set(integer({ min: 0, max: size })), (xs) => xs.length === collect(unique(xs)).length, { seed: 1638968569864n })
+    })
+
+    test('always larger than minsize', () => {
+        const size = 3
+        forAll(set(integer(), { minLength: size, maxLength: 100 }), (xs) => {
+            return xs.length >= size
+        })
+    })
 })
+
 test('always larger than minsize', () => {
     const size = 3
     forAll(set(integer(), { minLength: size, maxLength: 100 }), (xs) => {

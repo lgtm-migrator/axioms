@@ -20,14 +20,15 @@ function uniqueArbitraryTree<T>(eq: (a: T, b: T) => boolean, vals: Tree<T[]>): T
 export interface SetGenerator<T> {
     minLength: number
     maxLength: number
+    useBias: boolean
     eq: (a: T, b: T) => boolean
 }
 
 export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGenerator<T>> = {}): Arbitrary<T[]> {
-    const { minLength = 0, maxLength = 10, eq = equal } = context
+    const { minLength = 0, maxLength = 10, useBias = false, eq = equal } = context
     const aarray = arrayWith(
         (y, xs, i) => {
-            if (i > maxLength * 2) {
+            if (i > maxLength * 4) {
                 throw new InfeasibleTree()
             }
             return xs.find((x) => eq(y, x)) === undefined
@@ -37,7 +38,7 @@ export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGener
     )
     return makeDependent((ctx) => {
         // make sure we don't shrink to an array with duplicates
-        return uniqueArbitraryTree<T>(eq, aarray.value(ctx))
+        return uniqueArbitraryTree<T>(eq, aarray.value({ ...ctx, bias: useBias ? ctx.bias : undefined }))
     })
 }
 
