@@ -1,14 +1,15 @@
 import { head } from '../../array'
 import { isArray } from '../../guard'
-import type { Maybe, Traversable } from '../../type'
+import type { BuildTuple, Maybe, Traversable } from '../../type'
 import { Nothing } from '../../type'
 import { drop } from '../drop'
 
 export type Nth<N extends number, T> = T extends readonly any[] ? T[N] : never
 
-export function at<T>(n: 0, xs: T): T extends readonly [infer N0, ...unknown[]] ? N0 : Nothing
-export function at<T>(n: 1, xs: T): T extends readonly [unknown, infer N1, ...unknown[]] ? N1 : Nothing
-export function at<T>(n: 2, xs: T): T extends readonly [unknown, unknown, infer N2, ...unknown[]] ? N2 : Nothing
+export function at<Xs extends any[], N extends number>(
+    n: N,
+    xs: readonly [...Xs]
+): Xs extends readonly [...BuildTuple<N, any>, infer X, ...any[]] ? X : number extends Xs['length'] ? Maybe<Xs[N]> : Nothing
 export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Maybe<T>
 export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Maybe<T> {
     if (isArray<T>(xs)) {
