@@ -28,6 +28,8 @@ export function nullable<T>(a: Arbitrary<T>, context: RelaxedPartial<OptionGener
     return makeDependent((ctx) => afreq.value(ctx))
 }
 
+export function constant<T extends boolean | number | string | symbol>(x: T): Arbitrary<T>
+export function constant<T>(x: T): Arbitrary<T>
 export function constant<T>(x: T): Arbitrary<T> {
     return {
         value: () => tree(x, []),
