@@ -12,7 +12,7 @@ export function at<T>(n: 2, xs: T): T extends readonly [unknown, unknown, infer 
 export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Maybe<T>
 export function at<T, N extends number = number>(n: N, xs: Traversable<T>): Maybe<T> {
     if (isArray<T>(xs)) {
-        return n > xs.length ? Nothing : xs[n]
+        return n >= xs.length ? Nothing : xs[n]
     }
     // slow iterator compatible version
     return head(drop(n, xs))

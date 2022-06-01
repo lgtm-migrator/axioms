@@ -1,6 +1,7 @@
 import { at, first, second } from './at'
 
 import { array, chainArbitrary, forAll, integer, tuple, unknown } from '../../random'
+import { Nothing } from '../../type'
 import { drop } from '../drop'
 
 describe('at', () => {
@@ -28,14 +29,26 @@ describe('at', () => {
         })
     })
 
-    test('ith index on array', () => {
+    test('ith index on array - index in bounds', () => {
         forAll(
             chainArbitrary(
                 (n) => tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n })),
-                integer({ min: 0, max: 50 })
+                integer({ min: 1, max: 50 })
             ),
             ([xs, i]) => {
                 return at(i, xs) === xs[i]
+            }
+        )
+    })
+
+    test('ith index on array - index out of bounds', () => {
+        forAll(
+            chainArbitrary(
+                (n) => tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 })),
+                integer({ min: 0, max: 50 })
+            ),
+            ([xs, i]) => {
+                return at(i, xs) === Nothing
             }
         )
     })
