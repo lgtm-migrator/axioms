@@ -1,5 +1,6 @@
 export * from './algorithm'
 export * from './array'
+export * from './async'
 export * from './crypto'
 export * from './fs'
 export * from './function'
