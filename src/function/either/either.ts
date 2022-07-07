@@ -23,7 +23,7 @@ export type ArgLefts<Xs> = Xs extends [infer X, ...infer Rest]
     ? Array<I extends Left<infer L> ? L : never>
     : []
 
-export function mapRight<L, R, M>(f: (r: R) => M, x: Either<L, R>): Either<L, M> {
+export function mapRight<L, R, M>(x: Either<L, R>, f: (r: R) => M): Either<L, M> {
     if (isLeft(x)) {
         return x
     }
@@ -31,13 +31,13 @@ export function mapRight<L, R, M>(f: (r: R) => M, x: Either<L, R>): Either<L, M>
 }
 
 export function mapRights<Xs extends Either<any, any>[], M>(
-    f: (...rs: ArgRights<Xs>) => M,
-    xs: readonly [...Xs]
+    xs: readonly [...Xs],
+    f: (...rs: ArgRights<Xs>) => M
 ): Either<ArgLefts<Xs>[number], M> {
-    return whenRights((...args) => ({ right: f(...args) }), xs)
+    return whenRights(xs, (...args) => ({ right: f(...args) }))
 }
 
-export function whenRight<L, R, M>(f: (r: R) => M, x: Either<L, R>): Left<L> | M {
+export function whenRight<L, R, M>(x: Either<L, R>, f: (r: R) => M): Left<L> | M {
     if (isLeft(x)) {
         return x
     }
@@ -45,8 +45,8 @@ export function whenRight<L, R, M>(f: (r: R) => M, x: Either<L, R>): Left<L> | M
 }
 
 export function whenRights<Xs extends Either<any, any>[], M>(
-    f: (...rs: ArgRights<Xs>) => M,
-    xs: readonly [...Xs]
+    xs: readonly [...Xs],
+    f: (...rs: ArgRights<Xs>) => M
 ): Left<ArgLefts<Xs>[number]> | M {
     const l = xs.find((x) => !isRight(x))
     if (l !== undefined) {
@@ -55,7 +55,7 @@ export function whenRights<Xs extends Either<any, any>[], M>(
     return f(...(xs.map((x) => (x as Right<unknown>).right) as ArgRights<Xs>))
 }
 
-export function mapLeft<L, R, M>(f: (r: L) => M, x: Either<L, R>): Either<M, R> {
+export function mapLeft<L, R, M>(x: Either<L, R>, f: (r: L) => M): Either<M, R> {
     if (isRight(x)) {
         return x
     }
@@ -63,13 +63,13 @@ export function mapLeft<L, R, M>(f: (r: L) => M, x: Either<L, R>): Either<M, R> 
 }
 
 export function mapLefts<Xs extends Either<any, any>[], M>(
-    f: (...ls: ArgLefts<Xs>) => M,
-    xs: readonly [...Xs]
+    xs: readonly [...Xs],
+    f: (...ls: ArgLefts<Xs>) => M
 ): Either<M, ArgRights<Xs>[number]> {
-    return whenLefts((...args) => ({ left: f(...args) }), xs)
+    return whenLefts(xs, (...args) => ({ left: f(...args) }))
 }
 
-export function whenLeft<L, R, M>(f: (r: L) => M, x: Either<L, R>): M | Right<R> {
+export function whenLeft<L, R, M>(x: Either<L, R>, f: (r: L) => M): M | Right<R> {
     if (isRight(x)) {
         return x
     }
@@ -77,8 +77,8 @@ export function whenLeft<L, R, M>(f: (r: L) => M, x: Either<L, R>): M | Right<R>
 }
 
 export function whenLefts<Xs extends Either<any, any>[], M>(
-    f: (...rs: ArgLefts<Xs>) => M,
-    xs: readonly [...Xs]
+    xs: readonly [...Xs],
+    f: (...rs: ArgLefts<Xs>) => M
 ): M | Right<ArgRights<Xs>[number]> {
     const l = xs.find((x) => !isLeft(x))
     if (l !== undefined) {

@@ -48,7 +48,7 @@ export function forAll<T>(
     const maybeCounterExample = falsify<T>({
         predicate: safePredicate,
         values: (ctx = { skips: 0 }) =>
-            replicate(tests, (i) => {
+            replicate((i) => {
                 while (ctx.skips < maxSkips) {
                     try {
                         const value = arbitrary.value({
@@ -70,7 +70,7 @@ export function forAll<T>(
                     }
                 }
                 throw new InfeasibleTree()
-            }),
+            }, tests),
         maxDepth: shrinks,
         counterExample,
     })

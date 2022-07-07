@@ -1,8 +1,8 @@
 import { mapTree } from '../../../algorithm'
-import type { Mappable } from '../../../type'
 import { toGenerator, toTraversable, toTraverser } from '../../../type'
-import type { Dependent } from '../../arbitrary'
-import { makeDependent } from '../../arbitrary'
+import type { Mappable } from '../../../type/traversable'
+import { makeDependent } from '../../arbitrary/dependent'
+import type { Dependent } from '../../arbitrary/dependent'
 import { integer } from '../integer'
 
 type ToMappable<Xs extends Mappable<unknown>> = Xs extends Mappable<infer T, infer R> ? Mappable<T, R> : never
@@ -19,5 +19,5 @@ const mappableFuncs: MappableFunc[] = [
 ]
 export function mappableFunc(): Dependent<MappableFunc> {
     const aint = integer({ min: 0, max: mappableFuncs.length })
-    return makeDependent((context) => mapTree((i) => mappableFuncs[i], aint.value(context)))
+    return makeDependent((context) => mapTree(aint.value(context), (i) => mappableFuncs[i]))
 }

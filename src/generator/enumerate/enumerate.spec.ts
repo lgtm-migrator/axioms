@@ -12,7 +12,7 @@ test('enumerate == zip counter()', () => {
 test('map first enumerate == range', () => {
     forAll(array(unknown()), (xs) =>
         allEqual(
-            map((x) => x[0], enumerate(xs)),
+            map(enumerate(xs), (x) => x[0]),
             range(xs.length)
         )
     )
@@ -21,7 +21,7 @@ test('map first enumerate == range', () => {
 test('map second enumerate == identity', () => {
     forAll(array(unknown()), (xs) =>
         allEqual(
-            map((x) => x[1], enumerate(xs)),
+            map(enumerate(xs), (x) => x[1]),
             xs
         )
     )

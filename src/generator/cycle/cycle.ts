@@ -1,4 +1,4 @@
-import { applicative } from '../..'
+import { applicative } from '../../iterator/applicative'
 import type { Mappable, InfiniteGenerator } from '../../type'
 import { toTraversable } from '../../type'
 

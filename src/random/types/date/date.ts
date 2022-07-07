@@ -29,7 +29,7 @@ export function datetime(context: RelaxedPartial<DatetimeGenerator> = {}): Depen
     const { minDatetime, maxDatetime, precision = 'seconds', range = 'relevant' } = context
     const atimestamp = timestamp({ min: minDatetime?.getTime(), max: maxDatetime?.getTime(), range })
     return makeDependent((ctx) =>
-        mapTree((i) => {
+        mapTree(atimestamp.value(ctx), (i) => {
             const d = new Date(i)
             if (!['milliseconds'].includes(precision)) {
                 d.setMilliseconds(0)
@@ -44,7 +44,7 @@ export function datetime(context: RelaxedPartial<DatetimeGenerator> = {}): Depen
                 d.setHours(0)
             }
             return d
-        }, atimestamp.value(ctx))
+        })
     )
 }
 
@@ -63,8 +63,8 @@ export function date(context: RelaxedPartial<DateGenerator> = {}): Dependent<str
         precision: 'days',
     })
     return makeDependent((ctx) =>
-        mapTree((d) => {
+        mapTree(atimestamp.value(ctx), (d) => {
             return toISO8601Date(d, { format: 'date' })
-        }, atimestamp.value(ctx))
+        })
     )
 }

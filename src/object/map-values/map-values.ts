@@ -1,8 +1,8 @@
 import { entriesOf } from '../entries-of'
 
 export function mapValues<T, Mapper extends (v: T[keyof T], k: keyof T) => unknown>(
-    mapper: Mapper,
-    obj: T
+    obj: T,
+    mapper: Mapper
 ): {
     [K in keyof T]: Mapper extends (v: T[K], k: K) => infer O ? O : never
 } {

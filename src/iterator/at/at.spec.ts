@@ -7,84 +7,81 @@ import { drop } from '../drop'
 describe('at', () => {
     test('first on array', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
-            return at(0, xs) === xs[0]
+            return at(xs, 0) === xs[0]
         })
     })
 
     test('first on array === first', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
-            return at(0, xs) === first(xs)
+            return at(xs, 0) === first(xs)
         })
     })
 
     test('second on array', () => {
         forAll(array(unknown(), { minLength: 2 }), (xs) => {
-            return at(1, xs) === xs[1]
+            return at(xs, 1) === xs[1]
         })
     })
 
     test('second on array === second', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
-            return at(1, xs) === second(xs)
+            return at(xs, 1) === second(xs)
         })
     })
 
     test('ith index on array - index in bounds', () => {
         forAll(
-            chainArbitrary(
-                (n) => tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n })),
-                integer({ min: 1, max: 50 })
+            chainArbitrary(integer({ min: 1, max: 50 }), (n) =>
+                tuple(array(unknown(), { minLength: n }), integer({ min: 0, max: n }))
             ),
             ([xs, i]) => {
-                return at(i, xs) === xs[i]
+                return at(xs, i) === xs[i]
             }
         )
     })
 
     test('ith index on array - index out of bounds', () => {
         forAll(
-            chainArbitrary(
-                (n) => tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 })),
-                integer({ min: 0, max: 50 })
+            chainArbitrary(integer({ min: 0, max: 50 }), (n) =>
+                tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: n, max: 2 * n + 1 }))
             ),
             ([xs, i]) => {
-                return at(i, xs) === Nothing
+                return at(xs, i) === Nothing
             }
         )
     })
 
     test('first on iterator', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
-            return at(0, drop(0, xs)) === xs[0]
+            return at(drop(xs, 0), 0) === xs[0]
         })
     })
 
     test('first on iterator === first', () => {
         forAll(array(unknown(), { minLength: 1 }), (xs) => {
-            return at(0, drop(0, xs)) === first(drop(0, xs))
+            return at(drop(xs, 0), 0) === first(drop(xs, 0))
         })
     })
 
     test('second on iterator', () => {
         forAll(array(unknown(), { minLength: 2 }), (xs) => {
-            return at(1, drop(0, xs)) === xs[1]
+            return at(drop(xs, 0), 1) === xs[1]
         })
     })
 
     test('second on iterator === second', () => {
         forAll(array(unknown(), { minLength: 2 }), (xs) => {
-            return at(1, drop(0, xs)) === second(drop(0, xs))
+            return at(drop(xs, 0), 1) === second(drop(xs, 0))
         })
     })
 
     test('ith index on iterator', () => {
         forAll(
-            chainArbitrary(
-                (n) => tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: 0, max: n - 1 })),
-                integer({ min: 1, max: 50 })
+            chainArbitrary(integer({ min: 1, max: 50 }), (n) =>
+                tuple(array(unknown(), { minLength: n, maxLength: n }), integer({ min: 0, max: n - 1 }))
             ),
             ([xs, i]) => {
-                return at(i, drop(0, xs)) === xs[i]
+                return at(drop(xs, 0), i) === xs[i]
             }
         )
     })

@@ -25,7 +25,7 @@ test('min xs <= all y', () => {
         tuple(mappableFunc(), oneOf(array(float(), { minLength: 1 }), array(string(), { minLength: 1 }))),
         <T extends ComparablePrimitive>([f, xs]: [(ys: T[]) => Mappable<T>, T[]]) => {
             const x = min(toTraversable(f(xs)))
-            return isJust(x) && all((y) => x <= y, xs)
+            return isJust(x) && all(xs, (y) => x <= y)
         }
     )
 })
@@ -39,15 +39,15 @@ test('min xs === Nothing, when |xs| === 0', () => {
 
 test('minBy toISOString, xs <= all y.toISOString()', () => {
     forAll(tuple(mappableFunc(), array(oneOf(date(), datetime()), { minLength: 1 })), ([f, xs]) => {
-        const fxs = applicative(map((x) => new Date(x), toTraversable(f(xs))))
-        const x = minBy((d) => d.toISOString(), fxs)
-        return isJust(x) && all((y) => x.toISOString() <= y.toISOString(), fxs)
+        const fxs = applicative(map(toTraversable(f(xs)), (x) => new Date(x)))
+        const x = minBy(fxs, (d) => d.toISOString())
+        return isJust(x) && all(fxs, (y) => x.toISOString() <= y.toISOString())
     })
 })
 
 test('minBy identity, xs === Nothing, when |xs| === 0', () => {
     forAll(
         tuple(mappableFunc(), oneOf(array(oneOf(float(), string()), { maxLength: 0 }))),
-        ([f, xs]) => minBy(identity, toTraversable(f(xs))) === Nothing
+        ([f, xs]) => minBy(toTraversable(f(xs)), identity) === Nothing
     )
 })

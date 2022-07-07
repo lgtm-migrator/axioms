@@ -18,14 +18,14 @@ test('simple', () => {
 test('continued', () => {
     const q = stack([1, 2, 3, 4])
     q.push([5, 6, 7])
-    expect(collect(take(3, q))).toMatchInlineSnapshot(`
+    expect(collect(take(q, 3))).toMatchInlineSnapshot(`
         Array [
           5,
           6,
           7,
         ]
     `)
-    expect(collect(take(2, q))).toMatchInlineSnapshot(`
+    expect(collect(take(q, 2))).toMatchInlineSnapshot(`
         Array [
           1,
           2,
@@ -47,14 +47,14 @@ test('continued 2', () => {
     q.push([4, 5])
     q.push([6, 7])
 
-    expect(collect(take(3, q))).toMatchInlineSnapshot(`
+    expect(collect(take(q, 3))).toMatchInlineSnapshot(`
         Array [
           6,
           7,
           4,
         ]
     `)
-    expect(collect(take(2, q))).toMatchInlineSnapshot(`
+    expect(collect(take(q, 2))).toMatchInlineSnapshot(`
         Array [
           5,
           2,
@@ -71,13 +71,13 @@ test('continued 2', () => {
 })
 
 test('take n stack xs === xs', () => {
-    forAll(array(unknown()), (xs) => allEqual(take(xs.length, stack(xs)), xs))
+    forAll(array(unknown()), (xs) => allEqual(take(stack(xs), xs.length), xs))
 })
 
 test('take n stack.push(...xss) === reverse xs', () => {
     forAll(array(array(unknown())), (xss) => {
         const values = stack()
         values.push(...xss)
-        return allEqual(take(sum(map((xs) => xs.length, xss)), values), xss.reverse().flat())
+        return allEqual(take(values, sum(map(xss, (xs) => xs.length))), xss.reverse().flat())
     })
 })

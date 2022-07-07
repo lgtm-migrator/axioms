@@ -13,7 +13,7 @@ export interface CharGenerator {
 export function charGenerator(context: Partial<CharGenerator> = {}): Arbitrary<string> {
     const { min = 32, max = 126, transform = String.fromCharCode } = context
     const int = integer({ min, max })
-    return makeDependent((ctx) => mapTree((i) => transform(i), int.value(ctx)))
+    return makeDependent((ctx) => mapTree(int.value(ctx), (i) => transform(i)))
 }
 
 function toAscii(x: number): string {

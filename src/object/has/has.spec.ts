@@ -5,5 +5,5 @@ import { keysOf } from '../../object'
 import { forAll, dict, unknown } from '../../random'
 
 test('all has keysOf o', () => {
-    forAll(dict(unknown()), (o) => all((k) => has(k, o), keysOf(o)))
+    forAll(dict(unknown()), (o) => all(keysOf(o), (k) => has(o, k)))
 })

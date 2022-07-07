@@ -9,7 +9,7 @@ import { toGenerator } from '../../type'
 test('peekable xs === xs', () => {
     forAll(array(unknown()), (xs) => {
         const n = xs.length
-        expect(collect(take(n, peekable(xs)))).toEqual(xs)
+        expect(collect(take(peekable(xs), n))).toEqual(xs)
     })
 })
 
@@ -20,23 +20,20 @@ test('has +1 lookahead', () => {
         expect(
             collect(
                 take(
-                    n,
                     repeat(() => {
                         return [it.peek(), next(it)]
-                    })
+                    }),
+                    n
                 )
             )
         ).toEqual(
             collect(
-                map(
-                    ([y, xp]) => [
-                        {
-                            right: y,
-                        },
-                        { right: xp },
-                    ],
-                    zip(xs, concat(xs, [undefined]))
-                )
+                map(zip(xs, concat(xs, [undefined])), ([y, xp]) => [
+                    {
+                        right: y,
+                    },
+                    { right: xp },
+                ])
             )
         )
         expect(it.peek()).toEqual({ left: x })

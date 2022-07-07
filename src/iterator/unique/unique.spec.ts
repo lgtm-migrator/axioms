@@ -16,6 +16,6 @@ test('|X| >= unique X', () => {
 
 test('keys groupby identity X === map string unique X', () => {
     forAll(array(json()), (xs) => {
-        expect(collect(unique(xs)).map((x) => JSON.stringify(x))).toContainAllValues(Object.keys(groupBy(JSON.stringify, xs)))
+        expect(collect(unique(xs)).map((x) => JSON.stringify(x))).toContainAllValues(Object.keys(groupBy(xs, JSON.stringify)))
     })
 })

@@ -9,11 +9,11 @@ test('distribution', () => {
 
     expect(
         mapValues(
-            (v) => v.length,
             groupBy(
-                (x) => x.toString(),
-                replicate(1000, () => boolean().sample(context))
-            )
+                replicate(() => boolean().sample(context), 1000),
+                (x) => x.toString()
+            ),
+            (v) => v.length
         )
     ).toMatchInlineSnapshot(`
         Object {

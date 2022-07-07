@@ -1,1 +1,0 @@
-export { Showable } from './showable'

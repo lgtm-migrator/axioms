@@ -4,7 +4,7 @@ import { collect } from '../../array'
 
 describe('drop', () => {
     test('string', () => {
-        expect(collect(drop(6, 'hello world!'))).toMatchInlineSnapshot(`
+        expect(collect(drop('hello world!', 6))).toMatchInlineSnapshot(`
               Array [
                 "w",
                 "o",
@@ -17,11 +17,11 @@ describe('drop', () => {
     })
 
     test('short', () => {
-        expect(collect(drop(6, [1, 2]))).toMatchInlineSnapshot(`Array []`)
+        expect(collect(drop([1, 2], 6))).toMatchInlineSnapshot(`Array []`)
     })
 
     test('negative', () => {
-        expect(collect(drop(-1, [1, 2]))).toMatchInlineSnapshot(`
+        expect(collect(drop([1, 2], -1))).toMatchInlineSnapshot(`
                     Array [
                       1,
                       2,
@@ -30,7 +30,7 @@ describe('drop', () => {
     })
 
     test('zero', () => {
-        expect(collect(drop(0, [1, 2]))).toMatchInlineSnapshot(`
+        expect(collect(drop([1, 2], 0))).toMatchInlineSnapshot(`
                     Array [
                       1,
                       2,
@@ -39,7 +39,7 @@ describe('drop', () => {
     })
 
     test('simple', () => {
-        expect(collect(drop(5, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))).toMatchInlineSnapshot(`
+        expect(collect(drop([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 5))).toMatchInlineSnapshot(`
                     Array [
                       6,
                       7,
@@ -53,7 +53,7 @@ describe('drop', () => {
 
 describe('dropWhile', () => {
     test('simple', () => {
-        expect(collect(dropWhile((x) => x < 3, [1, 2, 3, 4, 5, 1, 2, 3]))).toMatchInlineSnapshot(`
+        expect(collect(dropWhile([1, 2, 3, 4, 5, 1, 2, 3], (x) => x < 3))).toMatchInlineSnapshot(`
             Array [
               3,
               4,
@@ -66,11 +66,11 @@ describe('dropWhile', () => {
     })
 
     test('all', () => {
-        expect(collect(dropWhile((x) => x < 9, [1, 2, 3]))).toMatchInlineSnapshot(`Array []`)
+        expect(collect(dropWhile([1, 2, 3], (x) => x < 9))).toMatchInlineSnapshot(`Array []`)
     })
 
     test('none', () => {
-        expect(collect(dropWhile((x) => x < 0, [1, 2, 3]))).toMatchInlineSnapshot(`
+        expect(collect(dropWhile([1, 2, 3], (x) => x < 0))).toMatchInlineSnapshot(`
             Array [
               1,
               2,

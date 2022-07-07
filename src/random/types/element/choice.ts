@@ -5,5 +5,5 @@ import { integer } from '../integer'
 
 export function element<T>(elements: T extends string ? string : T[]): Dependent<T extends string ? string : T> {
     const aint = integer({ min: 0, max: elements.length })
-    return makeDependent((context) => mapTree((n) => elements[n] as T extends string ? string : T, aint.value(context)))
+    return makeDependent((context) => mapTree(aint.value(context), (n) => elements[n] as T extends string ? string : T))
 }

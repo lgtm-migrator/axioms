@@ -15,7 +15,7 @@ test('fizzbuzz', () => {
             yield factors.map(([factor, text]) => (x % factor ? undefined : text)).reduce((p, c) => p ?? c) ?? x
         }
     }
-    expect(collect(take(100, fizzbuzz(counter(1))))).toMatchInlineSnapshot(`
+    expect(collect(take(fizzbuzz(counter(1)), 100))).toMatchInlineSnapshot(`
         Array [
           1,
           2,

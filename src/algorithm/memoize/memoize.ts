@@ -1,9 +1,9 @@
-import { mapValues } from '../..'
-import { evaluate } from '../../function'
-import { isDefined } from '../../guard'
+import { evaluate } from '../../function/evaluate'
+import { isDefined } from '../../guard/is-defined'
 import { isLeft } from '../../guard/is-left'
-import { unique } from '../../iterator'
-import type { Dict } from '../../type'
+import { unique } from '../../iterator/unique'
+import { mapValues } from '../../object/map-values'
+import type { Dict } from '../../type/dict'
 import type { Either } from '../../type/either'
 import { Nothing } from '../../type/maybe'
 
@@ -29,7 +29,7 @@ export function memoize<T>(getter: T | (() => T)): Memoized<T> {
 
 export type MemoizeAttributes<T extends Dict<() => unknown>> = { [K in keyof T]: Memoized<T[K]> }
 export function memoizeAttributes<T extends Dict<() => unknown>>(x: T): MemoizeAttributes<T> {
-    return mapValues(memoize, x) as MemoizeAttributes<T>
+    return mapValues(x, memoize) as MemoizeAttributes<T>
 }
 
 export function memoizeGetters<T>(x: T & { clear?: never }): Omit<T, 'clear'> & { clear: (k: keyof T) => void } {

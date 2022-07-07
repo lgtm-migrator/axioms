@@ -2,14 +2,14 @@ import { repeat } from '../../generator/repeat'
 import { filterWithMemory } from '../filter'
 import { take } from '../take'
 
-export function* replicate<T>(n: number, val: T | ((i: number) => T)): Generator<T> {
-    yield* take(n, repeat(val))
+export function* replicate<T>(x: T | ((i: number) => T), n: number): Generator<T> {
+    yield* take(repeat(x), n)
 }
 
 export function* replicateWithMemory<T>(
+    x: (i: number) => T,
     predicate: (x: T, xs: T[], i: number, skippedInRow: number) => boolean,
-    n: number,
-    x: (i: number) => T
+    n: number
 ): Generator<T> {
-    yield* take(n, filterWithMemory(predicate, repeat(x)))
+    yield* take(filterWithMemory(repeat(x), predicate), n)
 }

@@ -5,5 +5,5 @@ import { alphaNumericString } from '../string'
 
 export function symbol(): Dependent<symbol> {
     const symbolStr = alphaNumericString()
-    return makeDependent((context) => mapTree((s) => Symbol.for(s), symbolStr.value(context)))
+    return makeDependent((context) => mapTree(symbolStr.value(context), (s) => Symbol.for(s)))
 }

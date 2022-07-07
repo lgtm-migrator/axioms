@@ -1,4 +1,4 @@
-import { next } from '../../generator'
+import { next } from '../../generator/next'
 import { isLeft, isRight } from '../../guard'
 import type { Traversable, Traverser } from '../../type'
 import { toTraverser } from '../../type'

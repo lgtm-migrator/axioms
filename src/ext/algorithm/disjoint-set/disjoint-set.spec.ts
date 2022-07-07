@@ -1,9 +1,9 @@
 import { disjointSet } from '.'
 
-import { maybeAsValue } from '../../function/maybe/maybe'
-import { range } from '../../generator'
-import { isJust } from '../../guard'
-import { forAll, set, string, natural } from '../../random'
+import { maybeAsValue } from '../../../function/maybe/maybe'
+import { range } from '../../../generator'
+import { isJust } from '../../../guard'
+import { forAll, set, string, natural } from '../../../random'
 
 test('disjointSet x == find x', () => {
     forAll(set(string()), (xs) => {

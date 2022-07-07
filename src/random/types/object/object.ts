@@ -22,7 +22,7 @@ export function object<T extends Record<PropertyKey, Arbitrary<unknown>>>(
 
     const arbitraries = Object.values(properties)
     const avalue = tuple(...arbitraries)
-    return makeDependent((context) => mapTree((v) => Object.fromEntries(zip(keys, v)), avalue.value(context))) as Dependent<{
+    return makeDependent((context) => mapTree(avalue.value(context), (v) => Object.fromEntries(zip(keys, v)))) as Dependent<{
         [K in keyof T]: T[K] extends { value(context: ArbitraryContext): { value: infer Value } } ? Value : never
     }>
 }

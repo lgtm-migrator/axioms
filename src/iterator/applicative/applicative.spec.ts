@@ -46,15 +46,15 @@ test('make reentrant - lazy', () => {
     }
     const axs = applicative(gen())
 
-    expect(collect(take(0, axs))).toEqual([])
+    expect(collect(take(axs, 0))).toEqual([])
     expect(fn).not.toHaveBeenCalled()
 
-    const take2 = collect(take(2, axs))
+    const take2 = collect(take(axs, 2))
     expect(fn).toHaveBeenCalledTimes(2)
-    expect(collect(take(2, axs))).toEqual(take2)
+    expect(collect(take(axs, 2))).toEqual(take2)
     expect(fn).toHaveBeenCalledTimes(2)
 
-    expect(collect(take(3, axs))).toMatchInlineSnapshot(`
+    expect(collect(take(axs, 3))).toMatchInlineSnapshot(`
         Array [
           0,
           1,

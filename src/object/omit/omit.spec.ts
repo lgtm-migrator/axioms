@@ -12,21 +12,21 @@ describe('omitUndefined', () => {
     test('key filtered in both filtered and original', () => {
         forAll(dict(unknown()), (x) => {
             const filtered = omitUndefined(x)
-            return all((k) => k in x && k in filtered, keysOf(filtered))
+            return all(keysOf(filtered), (k) => k in x && k in filtered)
         })
     })
 
     test('key in filtered if not omitted', () => {
         forAll(dict(unknown()), (x) => {
             const filtered = omitUndefined(x)
-            return all((k) => (x[k] !== undefined ? k in filtered : !(k in filtered) && k in x), keysOf(x))
+            return all(keysOf(x), (k) => (x[k] !== undefined ? k in filtered : !(k in filtered) && k in x))
         })
     })
 })
 
 describe('omit', () => {
     test('simple', () => {
-        expect(omit(['foo', 'bar'], { foo: 'bar', bar: 'foo', baz: 'baz' })).toMatchInlineSnapshot(`
+        expect(omit({ foo: 'bar', bar: 'foo', baz: 'baz' }, ['foo', 'bar'])).toMatchInlineSnapshot(`
             Object {
               "baz": "baz",
             }
@@ -34,28 +34,28 @@ describe('omit', () => {
     })
 
     test('omit [] x === identity', () => {
-        forAll(dict(unknown()), (x) => equal(omit([], x), x))
+        forAll(dict(unknown()), (x) => equal(omit(x, []), x))
     })
 
     test('omit [] x !== [ref] x', () => {
-        forAll(dict(unknown()), (x) => omit([], x) !== x)
+        forAll(dict(unknown()), (x) => omit(x, []) !== x)
     })
 
     test('omit keysOf x x == {}', () => {
-        forAll(dict(unknown()), (x) => equal(omit(keysOf(x), x), {}))
+        forAll(dict(unknown()), (x) => equal(omit(x, keysOf(x)), {}))
     })
 
     test('key filtered in both filtered and original', () => {
         forAll(dict(unknown()), (x) => {
-            const filtered = omit(keysOf(x).filter(deterministicBoolean), x)
-            return all((k) => k in x && k in filtered, keysOf(filtered))
+            const filtered = omit(x, keysOf(x).filter(deterministicBoolean))
+            return all(keysOf(filtered), (k) => k in x && k in filtered)
         })
     })
 
     test('key filtered if not omited', () => {
         forAll(dict(unknown()), (x) => {
-            const filtered = omit(keysOf(x).filter(deterministicBoolean), x)
-            return all((k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x), keysOf(x))
+            const filtered = omit(x, keysOf(x).filter(deterministicBoolean))
+            return all(keysOf(x), (k) => (!deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })
 })

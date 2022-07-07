@@ -25,7 +25,7 @@ test('max xs >= all y', () => {
         tuple(mappableFunc(), oneOf(array(float(), { minLength: 1 }), array(string(), { minLength: 1 }))),
         <T extends ComparablePrimitive>([f, xs]: [(ys: T[]) => Mappable<T>, T[]]) => {
             const x = max(toTraversable(f(xs)))
-            return isJust(x) && all((y) => x >= y, xs)
+            return isJust(x) && all(xs, (y) => x >= y)
         }
     )
 })
@@ -39,9 +39,9 @@ test('max xs === Nothing, when |xs| === 0', () => {
 
 test('maxBy toISOString, xs >= all y.toISOString()', () => {
     forAll(tuple(mappableFunc(), array(oneOf(date(), datetime()), { minLength: 1 })), ([f, xs]) => {
-        const fxs = applicative(map((x) => new Date(x), toTraversable(f(xs))))
+        const fxs = applicative(map(toTraversable(f(xs)), (x) => new Date(x)))
         const x = maxBy((d) => d.toISOString(), fxs)
-        return isJust(x) && all((y) => x.toISOString() >= y.toISOString(), fxs)
+        return isJust(x) && all(fxs, (y) => x.toISOString() >= y.toISOString())
     })
 })
 

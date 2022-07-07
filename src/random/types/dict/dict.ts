@@ -21,5 +21,5 @@ export function dict<T, K extends PropertyKey>(
     const [key, value] = isArray(keyValue) ? keyValue : [propertyKey(), keyValue]
     const aset = set(tuple(key, value), { eq: (a, b) => a[0] === b[0], minLength, maxLength })
 
-    return makeDependent((ctx) => mapTree((kvs) => Object.fromEntries(kvs), aset.value(ctx)))
+    return makeDependent((ctx) => mapTree(aset.value(ctx), (kvs) => Object.fromEntries(kvs)))
 }

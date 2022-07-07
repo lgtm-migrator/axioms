@@ -5,8 +5,8 @@ import { Nothing } from '../../type/maybe'
 import type { Traversable, Traverser } from '../../type/traversable'
 import { take } from '../take'
 
-export function splitAt<T>(at: number, xs: Traversable<T>): [T[], Traverser<T>] {
-    const takeIterator = take(at, xs)
+export function splitAt<T>(xs: Traversable<T>, at: number): [T[], Traverser<T>] {
+    const takeIterator = take(xs, at)
     const first = []
     let it = next(takeIterator)
     while (isRight(it)) {

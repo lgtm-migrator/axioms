@@ -1,7 +1,7 @@
-import { next } from '../../generator'
-import { isRight } from '../../guard'
-import type { Traversable } from '../../type'
-import { toTraverser } from '../../type'
+import { next } from '../../generator/next'
+import { isRight } from '../../guard/is-right'
+import { toTraverser } from '../../type/traversable'
+import type { Traversable } from '../../type/traversable'
 
 type ZipItem<Arr> = Arr extends Generator<infer G> ? G : Arr extends Array<infer I> ? I : never
 type Zip<T> = { [K in keyof T]: ZipItem<T[K]> }

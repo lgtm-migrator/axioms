@@ -5,7 +5,7 @@ import { take } from '../../../iterator'
 
 describe('towards', () => {
     test('simple', () => {
-        expect(collect(towards(0, 100))).toMatchInlineSnapshot(`
+        expect(collect(towards(100, 0))).toMatchInlineSnapshot(`
                       Array [
                         50,
                         75,
@@ -17,7 +17,7 @@ describe('towards', () => {
               `)
     })
     test('negative', () => {
-        expect(collect(towards(-50, -21))).toMatchInlineSnapshot(`
+        expect(collect(towards(-21, -50))).toMatchInlineSnapshot(`
                       Array [
                         -35,
                         -28,
@@ -69,7 +69,7 @@ describe('halves', () => {
 
 describe('towardsf', () => {
     test('simple', () => {
-        expect(collect(take(7, towardsf(0, 100)))).toMatchInlineSnapshot(`
+        expect(collect(take(towardsf(0, 100), 7))).toMatchInlineSnapshot(`
             Array [
               50,
               75,
@@ -82,7 +82,7 @@ describe('towardsf', () => {
         `)
     })
     test('negative', () => {
-        expect(collect(take(7, towardsf(-50, -21)))).toMatchInlineSnapshot(`
+        expect(collect(take(towardsf(-50, -21), 7))).toMatchInlineSnapshot(`
             Array [
               -35.5,
               -28.25,
@@ -98,7 +98,7 @@ describe('towardsf', () => {
 
 describe('halvesf', () => {
     test('simple', () => {
-        expect(collect(take(7, halvesf(15)))).toMatchInlineSnapshot(`
+        expect(collect(take(halvesf(15), 7))).toMatchInlineSnapshot(`
             Array [
               15,
               7.5,
@@ -112,7 +112,7 @@ describe('halvesf', () => {
     })
 
     test('large', () => {
-        expect(collect(take(7, halvesf(100)))).toMatchInlineSnapshot(`
+        expect(collect(take(halvesf(100), 7))).toMatchInlineSnapshot(`
             Array [
               100,
               50,
@@ -126,7 +126,7 @@ describe('halvesf', () => {
     })
 
     test('negative', () => {
-        expect(collect(take(7, halvesf(-31)))).toMatchInlineSnapshot(`
+        expect(collect(take(halvesf(-31), 7))).toMatchInlineSnapshot(`
             Array [
               -31,
               -15.5,

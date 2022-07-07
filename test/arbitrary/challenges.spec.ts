@@ -110,9 +110,9 @@ describe('shrinking challenge', () => {
 
     test('length list', () => {
         const aint = integer({ min: 1, max: 100 })
-        const alist = chainArbitrary((n) => {
-            return tuple(...collect(replicate(n, natural({ max: 1000 }))))
-        }, aint)
+        const alist = chainArbitrary(aint, (n) => {
+            return tuple(...collect(replicate(natural({ max: 1000 }), n)))
+        })
         expect(() =>
             forAll(
                 alist,

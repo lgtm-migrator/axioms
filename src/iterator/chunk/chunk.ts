@@ -4,11 +4,11 @@ import { itrampoline } from '../../util/trampoline'
 import type { RecurrentGenerator } from '../../util/trampoline'
 import { splitAt } from '../split'
 
-function _chunk<T>(size: number, xs: Traversable<T>): RecurrentGenerator<T[]> {
-    const [init, rest] = splitAt(size, xs)
-    return [init, init.length > 0 ? () => _chunk(size, toTraversable(rest)) : undefined]
+function _chunk<T>(xs: Traversable<T>, size: number): RecurrentGenerator<T[]> {
+    const [init, rest] = splitAt(xs, size)
+    return [init, init.length > 0 ? () => _chunk(toTraversable(rest), size) : undefined]
 }
 
-export function* chunk<T>(size: number, xs: Traversable<T>): Generator<T[]> {
-    yield* itrampoline(_chunk)(size, xs)
+export function* chunk<T>(xs: Traversable<T>, size: number): Generator<T[]> {
+    yield* itrampoline(_chunk)(xs, size)
 }

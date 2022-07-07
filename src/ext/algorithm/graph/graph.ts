@@ -1,9 +1,9 @@
-import { map } from '../../iterator'
-import type { Maybe, Traversable } from '../../type'
-import { Nothing } from '../../type'
+import { queue } from '../../../algorithm/queue'
+import { stack } from '../../../algorithm/stack'
+import { map } from '../../../iterator'
+import type { Maybe, Traversable } from '../../../type'
+import { Nothing } from '../../../type'
 import { disjointSet } from '../disjoint-set'
-import { queue } from '../queue'
-import { stack } from '../stack'
 
 export interface GraphNode<T> {
     name: string
@@ -64,7 +64,7 @@ export class Graph<T, E = never> {
         for (const x of nodes) {
             if (!visited.has(x)) {
                 yield x
-                nodes.enqueue(map((n) => this._nodes[n], Object.keys(this._fromToAdjacency[x.name])))
+                nodes.enqueue(map(Object.keys(this._fromToAdjacency[x.name]), (n) => this._nodes[n]))
                 visited.add(x)
             } else {
                 // cyclic
@@ -77,7 +77,7 @@ export class Graph<T, E = never> {
         for (const x of nodes) {
             if (!visited.has(x)) {
                 yield x
-                nodes.push(map((n) => this._nodes[n], Object.keys(this._fromToAdjacency[x.name])))
+                nodes.push(map(Object.keys(this._fromToAdjacency[x.name]), (n) => this._nodes[n]))
                 visited.add(x)
             } else {
                 // cyclic

@@ -14,7 +14,7 @@ export interface StringGenerator {
 export function stringGenerator(a: Arbitrary<string>, context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
     const { minLength = 0, maxLength = 10, transform = (s) => s.join('') } = context
     const alist = array(a, { minLength, maxLength })
-    return makeDependent((ctx) => mapTree(transform, alist.value(ctx)))
+    return makeDependent((ctx) => mapTree(alist.value(ctx), transform))
 }
 export function string(context: RelaxedPartial<StringGenerator> = {}): Arbitrary<string> {
     return stringGenerator(char(), context)

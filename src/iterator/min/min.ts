@@ -8,16 +8,16 @@ export function min<T extends ComparablePrimitive, Ts extends readonly [T, ...T[
 export function min<T extends ComparablePrimitive, Ts extends [T, ...T[]]>(xs: Ts): Just<Ts[number]>
 export function min<T extends ComparablePrimitive>(xs: Traversable<T>): Maybe<T>
 export function min<T extends ComparablePrimitive>(xs: Traversable<T>): Maybe<T> {
-    return foldl1((a, b) => (b < a ? b : a), xs)
+    return foldl1(xs, (a, b) => (b < a ? b : a))
 }
 
-export function minBy<T, Ts extends readonly [T, ...T[]]>(f: (item: T) => ComparablePrimitive, xs: Ts): Just<Ts[number]>
-export function minBy<T, Ts extends [T, ...T[]]>(f: (item: T) => ComparablePrimitive, xs: Ts): Just<Ts[number]>
-export function minBy<T>(f: (item: T) => ComparablePrimitive, xs: Traversable<T>): Maybe<T>
-export function minBy<T>(f: (item: T) => ComparablePrimitive, xs: Traversable<T>): Maybe<T> {
+export function minBy<T, Ts extends readonly [T, ...T[]]>(xs: Ts, f: (item: T) => ComparablePrimitive): Just<Ts[number]>
+export function minBy<T, Ts extends [T, ...T[]]>(xs: Ts, f: (item: T) => ComparablePrimitive): Just<Ts[number]>
+export function minBy<T>(xs: Traversable<T>, f: (item: T) => ComparablePrimitive): Maybe<T>
+export function minBy<T>(xs: Traversable<T>, f: (item: T) => ComparablePrimitive): Maybe<T> {
     const xMin = foldl1(
-        (acc, x) => (x[1] < acc[1] ? x : acc),
-        map((x) => [x, f(x)] as const, xs)
+        map(xs, (x) => [x, f(x)] as const),
+        (acc, x) => (x[1] < acc[1] ? x : acc)
     )
     return isJust(xMin) ? xMin[0] : Nothing
 }

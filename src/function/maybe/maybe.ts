@@ -16,12 +16,12 @@ export function rightToMaybe<T extends Either<any, any>>(x: T): Maybe<T extends 
     return isRight(x) ? x.right : Nothing
 }
 
-export function maybeToRight<L, X>(left: L, x: X): Either<L, Exclude<X, Nothing>> {
+export function maybeToRight<L, X>(x: X, left: L): Either<L, Exclude<X, Nothing>> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return isJust(x) ? { right: x as any } : { left }
 }
 
-export function maybeToLeft<X, R>(right: R, x: X): Either<Exclude<X, Nothing>, R> {
+export function maybeToLeft<X, R>(x: X, right: R): Either<Exclude<X, Nothing>, R> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return isJust(x) ? { left: x as any } : { right }
 }
@@ -30,7 +30,7 @@ export function maybeAsValue<X>(x: X): Exclude<X, Nothing> | undefined {
     return isJust(x) ? x : undefined
 }
 
-export function whenJust<X, M>(f: (x: Exclude<X, Nothing>) => M, x: Maybe<X>): Maybe<M> {
+export function whenJust<X, M>(x: Maybe<X>, f: (x: Exclude<X, Nothing>) => M): Maybe<M> {
     return isJust(x) ? f(x) : Nothing
 }
 
@@ -41,7 +41,7 @@ export type ArgJusts<Xs> = Xs extends [infer X, ...infer Rest]
     : Xs extends Array<infer I>
     ? Array<I extends infer J ? Exclude<J, Nothing> : never>
     : []
-export function whenJusts<Xs extends any[], M>(f: (...x: ArgJusts<Xs>) => M, xs: readonly [...Xs]): Maybe<M> {
+export function whenJusts<Xs extends any[], M>(xs: readonly [...Xs], f: (...x: ArgJusts<Xs>) => M): Maybe<M> {
     const n = xs.find((x) => !isJust(x))
     if (n !== undefined) {
         return Nothing
@@ -49,6 +49,6 @@ export function whenJusts<Xs extends any[], M>(f: (...x: ArgJusts<Xs>) => M, xs:
     return f(...(xs as unknown as ArgJusts<Xs>))
 }
 
-export function whenNothing<X, M>(f: () => M, x: Maybe<X>): M | X {
+export function whenNothing<X, M>(x: Maybe<X>, f: () => M): M | X {
     return isNothing(x) ? f() : x
 }

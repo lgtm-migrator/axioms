@@ -5,7 +5,7 @@ import { all, collect, dict, float, forAll, keysOf, shuffle, take, tuple, unknow
 test('defined properties are defined', () => {
     forAll(tuple(dict(unknown()), float({ min: 0, max: 1 })), ([xs, r]) => {
         const keys = keysOf(xs)
-        const selectedKeys = collect(take(r * keys.length, shuffle(keys)))
-        return hasPropertiesDefined(selectedKeys)(xs) === all((k) => xs[k] !== undefined, selectedKeys)
+        const selectedKeys = collect(take(shuffle(keys), r * keys.length))
+        return hasPropertiesDefined(selectedKeys)(xs) === all(selectedKeys, (k) => xs[k] !== undefined)
     })
 })

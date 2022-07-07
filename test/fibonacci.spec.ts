@@ -12,7 +12,7 @@ test('simple', () => {
         }
     }
 
-    expect(collect(take(10, fibonacci()))).toMatchInlineSnapshot(`
+    expect(collect(take(fibonacci(), 10))).toMatchInlineSnapshot(`
         Array [
           1,
           1,

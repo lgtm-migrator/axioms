@@ -4,7 +4,7 @@ import { sum, collect } from '../../../array'
 import { take } from '../../../iterator'
 
 test('snapshot', () => {
-    expect(collect(take(20, xoroshiro128plus(42n)))).toMatchInlineSnapshot(`
+    expect(collect(take(xoroshiro128plus(42n), 20))).toMatchInlineSnapshot(`
         Array [
           17588299989574477559n,
           16434512596789117038n,
@@ -33,7 +33,7 @@ test('snapshot', () => {
 test('jump', () => {
     const gen = xoroshiro128plus(42n)
     gen.jump()
-    expect(collect(take(20, gen))).toMatchInlineSnapshot(`
+    expect(collect(take(gen, 20))).toMatchInlineSnapshot(`
         Array [
           6921508229568972135n,
           15531501889178088198n,

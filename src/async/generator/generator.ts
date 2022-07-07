@@ -8,7 +8,7 @@ export async function asyncCollect<T>(xs: AsyncTraversable<T>): Promise<T[]> {
     return ys
 }
 
-export async function* asyncChunk<T>(size: number, xs: AsyncTraversable<T>): AsyncTraversable<T[]> {
+export async function* asyncChunk<T>(xs: AsyncTraversable<T>, size: number): AsyncTraversable<T[]> {
     let chunk: T[] = []
     for await (const item of xs) {
         chunk.push(item)

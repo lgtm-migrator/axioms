@@ -3,7 +3,7 @@ import { span } from '.'
 import { collect } from '../../array'
 
 test('simple', () => {
-    const [init, rest] = span((x) => x < 3, [1, 2, 3, 4, 5, 1, 2, 3])
+    const [init, rest] = span([1, 2, 3, 4, 5, 1, 2, 3], (x) => x < 3)
     expect(init).toMatchInlineSnapshot(`
         Array [
           1,
@@ -23,7 +23,7 @@ test('simple', () => {
 })
 
 test('all', () => {
-    const [init, rest] = span((x) => x < 9, [1, 2, 3])
+    const [init, rest] = span([1, 2, 3], (x) => x < 9)
     expect(init).toMatchInlineSnapshot(`
         Array [
           1,
@@ -35,7 +35,7 @@ test('all', () => {
 })
 
 test('none', () => {
-    const [init, rest] = span((x) => x < 0, [1, 2, 3])
+    const [init, rest] = span([1, 2, 3], (x) => x < 0)
     expect(init).toMatchInlineSnapshot(`Array []`)
     expect(collect(rest)).toMatchInlineSnapshot(`
         Array [

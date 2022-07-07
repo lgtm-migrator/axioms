@@ -77,13 +77,13 @@ test('concat take 2 repeat 1 take 2 repeat 2 === 1 1 2 2', () => {
         collect(
             concat(
                 take(
-                    2,
-                    repeat(() => 1)
+                    repeat(() => 1),
+                    2
                 ),
 
                 take(
-                    2,
-                    repeat(() => 2)
+                    repeat(() => 2),
+                    2
                 )
             )
         )

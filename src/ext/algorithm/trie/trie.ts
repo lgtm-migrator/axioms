@@ -1,13 +1,13 @@
-import { isJust, isNothing } from '../../guard'
-import type { Maybe } from '../../type/maybe'
-import { Nothing } from '../../type/maybe'
+import { isJust, isNothing } from '../../../guard'
+import type { Maybe } from '../../../type/maybe'
+import { Nothing } from '../../../type/maybe'
 
 export interface Trie<T> {
     value: Maybe<T>
     children: Record<Nothing | PropertyKey, Trie<T>>
 }
 
-function find<T>(parts: readonly string[], node: Trie<T>): Maybe<T> {
+function find<T>(node: Trie<T>, parts: readonly string[]): Maybe<T> {
     let child: Trie<T> | undefined = node
     for (const head of parts) {
         child = child.children[head]
@@ -18,7 +18,7 @@ function find<T>(parts: readonly string[], node: Trie<T>): Maybe<T> {
     return isJust(child.value) ? child.value : Nothing
 }
 
-function insert<T>(prefix: string[], value: T, node: Trie<T>): boolean {
+function insert<T>(node: Trie<T>, prefix: string[], value: T): boolean {
     let child: Trie<T> | undefined = node
     for (const head of prefix) {
         child = node.children[head]
@@ -42,10 +42,10 @@ export function trie<T>() {
     return {
         root,
         insert: function (prefix: string[], value: T) {
-            return insert(prefix, value, root)
+            return insert(root, prefix, value)
         },
         find: function (parts: readonly string[]) {
-            return find(parts, root)
+            return find(root, parts)
         },
     }
 }

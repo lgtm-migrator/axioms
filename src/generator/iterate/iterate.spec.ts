@@ -8,10 +8,10 @@ test('iterate x + 1 === counter x', () => {
     forAll(float(), (x) =>
         allEqual(
             take(
-                100,
-                iterate((y) => y + 1, x)
+                iterate(x, (y) => y + 1),
+                100
             ),
-            take(100, counter(x))
+            take(counter(x), 100)
         )
     )
 })

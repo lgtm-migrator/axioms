@@ -10,10 +10,10 @@ import { tuple } from '../tuple'
 export function domain(): Dependent<string> {
     const atld = lowerAlphaNumericString({ minLength: 2, maxLength: 12 })
     const adomain = tuple(array(subdomain(), { minLength: 1, maxLength: 4 }), atld)
-    return makeDependent((context) => mapTree(([subdomains, tld]) => `${subdomains.join('.')}.${tld}`, adomain.value(context)))
+    return makeDependent((context) => mapTree(adomain.value(context), ([subdomains, tld]) => `${subdomains.join('.')}.${tld}`))
 }
 
 export function subdomain(): Dependent<string> {
     const label = tuple(lowerAlphaNumeric(), lowerAlphaNumericString({ maxLength: 61, extra: '-' }), lowerAlphaNumeric())
-    return makeDependent((context) => mapTree((s) => s.join(''), label.value(context)))
+    return makeDependent((context) => mapTree(label.value(context), (s) => s.join('')))
 }

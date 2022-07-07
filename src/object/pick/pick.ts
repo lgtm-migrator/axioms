@@ -10,6 +10,6 @@ export function pickBy<T extends Dict, Predicate extends ([key, value]: [key: ke
     ) as Partial<T>
 }
 
-export function pick<T extends Dict, K extends keyof T>(keys: readonly K[], obj: T): SimplifyOnce<Pick<T, K>> {
+export function pick<T extends Dict, K extends keyof T>(obj: T, keys: readonly K[]): SimplifyOnce<Pick<T, K>> {
     return Object.fromEntries(entriesOf(obj).filter(([k]) => keys.includes(k as K))) as SimplifyOnce<Pick<T, K>>
 }

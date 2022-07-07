@@ -12,15 +12,15 @@ export function collapseArbitraryTree<T>(x: Tree<Tree<T>>): Tree<T> {
         value: x.value.value,
         children: applicative(
             concat(
-                map((c) => collapseArbitraryTree(c), x.children),
+                map(x.children, (c) => collapseArbitraryTree(c)),
                 x.value.children
             )
         ),
     }
 }
 
-export function chainArbitrary<T, U>(f: (a: T) => Arbitrary<U>, a: Arbitrary<T>): Dependent<U> {
+export function chainArbitrary<T, U>(a: Arbitrary<T>, f: (a: T) => Arbitrary<U>): Dependent<U> {
     return makeDependent((context) => {
-        return collapseArbitraryTree(mapTree((x) => f(x).value(context), a.value(context)))
+        return collapseArbitraryTree(mapTree(a.value(context), (x) => f(x).value(context)))
     })
 }

@@ -5,7 +5,7 @@ import { toTraversable } from '../../type/traversable'
 import type { Traversable } from '../../type/traversable'
 import { uncons } from '../uncons'
 
-export function foldl<T, R = T>(reducer: (acc: R, val: T) => R, init: R, xs: Traversable<T>): R {
+export function foldl<T, R = T>(xs: Traversable<T>, reducer: (acc: R, val: T) => R, init: R): R {
     let acc = init
     for (const x of xs) {
         acc = reducer(acc, x)
@@ -13,12 +13,12 @@ export function foldl<T, R = T>(reducer: (acc: R, val: T) => R, init: R, xs: Tra
     return acc
 }
 
-export function foldl1<T>(reducer: (acc: T, val: T) => T, xs: Traversable<T>): Maybe<T> {
+export function foldl1<T>(xs: Traversable<T>, reducer: (acc: T, val: T) => T): Maybe<T> {
     const [head, rest] = uncons(xs)
     // if first is undefined due to the length of the Iterable
     // the result will be an empty array
     if (isJust(head)) {
-        return foldl(reducer, head, toTraversable(rest))
+        return foldl(toTraversable(rest), reducer, head)
     }
     return Nothing
 }

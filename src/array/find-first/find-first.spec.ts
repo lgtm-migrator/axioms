@@ -5,7 +5,7 @@ import { forAll, array, unknown, natural } from '../../random'
 
 test('first in array without predicate', () => {
     forAll(array(unknown()), (xs) => {
-        const found = findFirst(() => true, xs)
+        const found = findFirst(xs, () => true)
         if (xs.length === 0) {
             return isNothing(found)
         }
@@ -18,7 +18,7 @@ test('finds randomly inserted', () => {
     forAll(array(natural()), (xs, { rng }) => {
         const randomIndex = Math.floor(rng.sample() * xs.length)
         xs.splice(randomIndex, 0, -1)
-        return -1 === findFirst((i) => i < 0, xs) && xs.findIndex((i) => i === -1) === randomIndex
+        return -1 === findFirst(xs, (i) => i < 0) && xs.findIndex((i) => i === -1) === randomIndex
     })
 })
 
@@ -29,7 +29,7 @@ test('finds first randomly inserted', () => {
         xs.splice(randomIndex, 0, -1)
         xs.splice(randomIndex2, 0, -2)
         return (
-            -1 === findFirst((i) => i < 0, xs) &&
+            -1 === findFirst(xs, (i) => i < 0) &&
             xs.findIndex((i) => i === -1) === randomIndex &&
             xs.findIndex((i) => i === -2) === randomIndex2 &&
             randomIndex < randomIndex2

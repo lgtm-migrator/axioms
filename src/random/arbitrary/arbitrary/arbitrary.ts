@@ -17,14 +17,14 @@ export interface Arbitrary<T> {
 export type TypeOfArbitrary<T extends Arbitrary<unknown>> = ReturnType<T['value']>['value']
 export type TypeOfArbitraries<T extends Arbitrary<unknown>[]> = ReturnType<[...T][number]['value']>['value']
 
-export function interleaveTree<T, U>(l: Tree<(x: T) => U>, r: Tree<T>): Tree<U> {
+export function interleaveTree<T, U>(r: Tree<T>, l: Tree<(x: T) => U>): Tree<U> {
     const { value: f, children: ls } = l
     const { value: x, children: rs } = r
     return {
         value: f(x),
         children: concat(
-            map((lp) => interleaveTree(lp, r), ls),
-            map((rp) => interleaveTree(l, rp), rs)
+            map(ls, (lp) => interleaveTree(r, lp)),
+            map(rs, (rp) => interleaveTree(rp, l))
         ),
     }
 }
@@ -37,7 +37,7 @@ export function interleave<U extends Tree<unknown>[]>(
     let init: any = mapApplicativeTree(curryTuple(xs.length), xs[0])
     for (let i = 1; i < xs.length; ++i) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        init = interleaveTree(init, xs[i])
+        init = interleaveTree(xs[i], init)
     }
     return init as Tree<{ [K in keyof U]: U[K] extends { value: infer Value } ? Value : never }>
 }
@@ -48,7 +48,7 @@ export function shrinkAll<T>(xs: Tree<T>[]): Tree<T[]>[] {
         const n = next(it)
         return isRight(n) ? ([true, n.right] as const) : ([false, x] as const)
     })
-    return children.every(([shrunk]) => shrunk) ? [interleaveList(map(([, c]) => c, children))] : []
+    return children.every(([shrunk]) => shrunk) ? [interleaveList(map(children, ([, c]) => c))] : []
 }
 
 export function interleaveList<T>(xs: Traversable<Tree<T>>, options: { minLength?: number } = {}): Tree<T[]> {
@@ -59,8 +59,8 @@ export function interleaveList<T>(xs: Traversable<Tree<T>>, options: { minLength
         concat(
             // half first to dissect
             ...[Math.floor(axs.length * 0.5) > minLength ? [interleaveList(shrinkX(axs, 0.5), options)] : []],
-            ...map(([as, b, cs]) => map((c) => interleaveList(concat(as, [c], cs), options), b.children), shrinkOne(axs)),
-            ...[axs.length > minLength ? map(([as, , cs]) => interleaveList(concat(as, cs), options), shrinkOne(axs)) : []]
+            ...map(shrinkOne(axs), ([as, b, cs]) => map(b.children, (c) => interleaveList(concat(as, [c], cs), options))),
+            ...[axs.length > minLength ? map(shrinkOne(axs), ([as, , cs]) => interleaveList(concat(as, cs), options)) : []]
             // lazy(() => shrinkAll(axs))
         )
     )

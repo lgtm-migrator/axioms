@@ -1,6 +1,6 @@
 import { isObject } from '../../guard'
 
-export function mergeDeep<T, U>(target: T, source: U): T | U {
+export function mergeDeep<T, U>(source: U, target: T): T | U {
     const output: Record<string, unknown> = Object.assign({}, target)
     if (isObject(target) && isObject(source)) {
         for (const key of Object.keys(source)) {
@@ -9,7 +9,7 @@ export function mergeDeep<T, U>(target: T, source: U): T | U {
                 if (!(key in target)) {
                     Object.assign(output, { [key]: obj })
                 } else {
-                    output[key] = mergeDeep(target[key], obj)
+                    output[key] = mergeDeep(obj, target[key])
                 }
             } else {
                 Object.assign(output, { [key]: obj })

@@ -1,10 +1,10 @@
 import { map } from '../../../iterator'
 import type { Traversable } from '../../../type'
 
-export function* towards(destination: number, x: number): Traversable<number, void> {
+export function* towards(x: number, destination: number): Traversable<number, void> {
     if (destination !== x) {
         const diff = Math.trunc(x / 2 - destination / 2)
-        yield* map((h) => Math.trunc(x - h), halves(diff))
+        yield* map(halves(diff), (h) => Math.trunc(x - h))
     }
 }
 
@@ -19,7 +19,7 @@ export function* halves(x: number): Traversable<number, void> {
 export function* towardsf(destination: number, x: number): Traversable<number, void> {
     if (destination !== x) {
         const diff = x / 2 - destination / 2
-        yield* map((h) => x - h, halvesf(diff))
+        yield* map(halvesf(diff), (h) => x - h)
     }
 }
 

@@ -1,6 +1,6 @@
-import { isJust, isRight } from '../../guard'
-import type { Either, Maybe } from '../../type'
-import { Nothing } from '../../type'
+import { isJust, isRight } from '../../../guard'
+import type { Either, Maybe } from '../../../type'
+import { Nothing } from '../../../type'
 
 export interface ParamTrie<T> {
     value: Either<Nothing, T>
@@ -8,7 +8,7 @@ export interface ParamTrie<T> {
     children: Record<Nothing | PropertyKey, ParamTrie<T>>
 }
 
-function find<T>(parts: readonly string[], node: ParamTrie<T>): Maybe<[T, [string, string][]]> {
+function find<T>(node: ParamTrie<T>, parts: readonly string[]): Maybe<[T, [string, string][]]> {
     let child: ParamTrie<T> | undefined = node
     const parameters: [string, string][] = []
     for (const head of parts) {
@@ -23,7 +23,7 @@ function find<T>(parts: readonly string[], node: ParamTrie<T>): Maybe<[T, [strin
     return 'right' in child.value ? [child.value.right, parameters] : Nothing
 }
 
-function insert<T>(prefix: Either<string, string>[], value: T, node: ParamTrie<T>): boolean {
+function insert<T>(node: ParamTrie<T>, prefix: Either<string, string>[], value: T): boolean {
     let child: ParamTrie<T> | undefined = node
     for (const head of prefix) {
         const [index, parameter] = isRight(head) ? ([head.right, Nothing] as const) : ([Nothing, head.left] as const)
@@ -53,10 +53,10 @@ export function parameterTrie<T>(): {
     return {
         root,
         insert: function (prefix: Either<string, string>[], value: T) {
-            return insert(prefix, value, root)
+            return insert(root, prefix, value)
         },
         find: function (parts: readonly string[]) {
-            return find(parts, root)
+            return find(root, parts)
         },
     }
 }

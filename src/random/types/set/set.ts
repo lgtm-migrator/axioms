@@ -13,7 +13,7 @@ import { mapArbitrary } from '../../arbitrary/transform'
 import { arrayWith } from '../array'
 import { tuple } from '../tuple'
 
-function uniqueArbitraryTree<T>(eq: (a: T, b: T) => boolean, vals: Tree<T[]>): Tree<T[]> {
+function uniqueArbitraryTree<T>(vals: Tree<T[]>, eq: (a: T, b: T) => boolean): Tree<T[]> {
     return filterTree((x) => collect(unique(x, eq)).length === x.length, vals)
 }
 
@@ -38,7 +38,7 @@ export function set<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<SetGener
     )
     return makeDependent((ctx) => {
         // make sure we don't shrink to an array with duplicates
-        return uniqueArbitraryTree<T>(eq, aarray.value({ ...ctx, bias: useBias ? ctx.bias : undefined }))
+        return uniqueArbitraryTree<T>(aarray.value({ ...ctx, bias: useBias ? ctx.bias : undefined }), eq)
     })
 }
 

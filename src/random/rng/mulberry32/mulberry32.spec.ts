@@ -4,7 +4,7 @@ import { sum, collect } from '../../../array'
 import { take } from '../../../iterator'
 
 test('snapshot', () => {
-    expect(collect(take(20, mulberry32(42)))).toMatchInlineSnapshot(`
+    expect(collect(take(mulberry32(42), 20))).toMatchInlineSnapshot(`
         Array [
           0.6011037519201636,
           0.44829055899754167,
@@ -33,7 +33,7 @@ test('snapshot', () => {
 test('jump', () => {
     const gen = mulberry32(42)
     gen.jump()
-    expect(collect(take(20, gen))).toMatchInlineSnapshot(`
+    expect(collect(take(gen, 20))).toMatchInlineSnapshot(`
         Array [
           0.6011037519201636,
           0.44829055899754167,

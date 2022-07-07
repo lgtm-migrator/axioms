@@ -18,14 +18,14 @@ test('simple', () => {
 test('continued', () => {
     const q = queue([1, 2, 3, 4])
     q.enqueue([5, 6, 7])
-    expect(collect(take(3, q))).toMatchInlineSnapshot(`
+    expect(collect(take(q, 3))).toMatchInlineSnapshot(`
         Array [
           1,
           2,
           3,
         ]
     `)
-    expect(collect(take(2, q))).toMatchInlineSnapshot(`
+    expect(collect(take(q, 2))).toMatchInlineSnapshot(`
         Array [
           4,
           5,
@@ -42,13 +42,13 @@ test('continued', () => {
 })
 
 test('take n queue xs === xs', () => {
-    forAll(array(unknown()), (xs) => allEqual(take(xs.length, queue(xs)), xs))
+    forAll(array(unknown()), (xs) => allEqual(take(queue(xs), xs.length), xs))
 })
 
 test('take n queue ...xss === xs', () => {
     forAll(array(array(unknown())), (xss) => {
         const vals = queue()
         vals.enqueue(...xss)
-        return allEqual(take(sum(map((xs) => xs.length, xss)), vals), xss.flat())
+        return allEqual(take(vals, sum(map(xss, (xs) => xs.length))), xss.flat())
     })
 })

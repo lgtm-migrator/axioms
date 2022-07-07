@@ -15,11 +15,11 @@ test('distribution', () => {
 
     expect(
         mapValues(
-            (v) => v.length,
             groupBy(
-                (x) => x % 10,
-                replicate(1000, () => integer().sample(context))
-            )
+                replicate(() => integer().sample(context), 1000),
+                (x) => x % 10
+            ),
+            (v) => v.length
         )
     ).toMatchInlineSnapshot(`
         Object {
@@ -126,8 +126,8 @@ test('random sample', () => {
     expect(
         collect(
             take(
-                10,
-                repeat(() => aint.sample(ctx))
+                repeat(() => aint.sample(ctx)),
+                10
             )
         )
     ).toMatchInlineSnapshot(`

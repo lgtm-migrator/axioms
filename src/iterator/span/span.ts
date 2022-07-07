@@ -3,8 +3,8 @@ import { isRight } from '../../guard/is-right'
 import type { Traversable, Traverser } from '../../type/traversable'
 import { takeWhile } from '../take'
 
-export function span<T, R>(predicate: (x: T) => boolean, xs: Traversable<T, R>): [T[], Traverser<T, R>] {
-    const takeIterator = takeWhile(predicate, xs)
+export function span<T, R>(xs: Traversable<T, R>, predicate: (x: T) => boolean): [T[], Traverser<T, R>] {
+    const takeIterator = takeWhile(xs, predicate)
     const first = []
     let it = next(takeIterator)
     while (isRight(it)) {

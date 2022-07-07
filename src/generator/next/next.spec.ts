@@ -14,8 +14,8 @@ describe('next', () => {
             expect(
                 collect(
                     take(
-                        n,
-                        repeat(() => next(it))
+                        repeat(() => next(it)),
+                        n
                     )
                 )
             ).toEqual(

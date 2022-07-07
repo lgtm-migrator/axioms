@@ -19,7 +19,7 @@ class BarError extends Error {
 test('leftToMaybe on unions', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const a: Either<FooError, boolean> = { right: true } as any
-    const b = whenRight((c): Either<BarError, Nothing> => (c ? { right: Nothing } : { left: new BarError() }), a)
+    const b = whenRight(a, (c): Either<BarError, Nothing> => (c ? { right: Nothing } : { left: new BarError() }))
     let x = leftToMaybe(b)
     expect(x).toEqual(Nothing)
     if (!isJust(x)) {
@@ -31,7 +31,7 @@ test('leftToMaybe on unions', () => {
 test('maybeToRight on union', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const a: Maybe<BarError> | Maybe<FooError> = new BarError() as any
-    let x = maybeToRight(Nothing, a)
+    let x = maybeToRight(a, Nothing)
     expect(x).toEqual({ right: new BarError() })
     if (isRight(x)) {
         x = { right: new FooError('wut') }

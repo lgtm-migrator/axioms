@@ -10,6 +10,6 @@ export function omitSymbols<T>(obj: T): { [k in keyof T]: k extends symbol ? nev
     return Object.fromEntries(Object.entries(obj)) as { [k in keyof T]: k extends symbol ? never : T[k] }
 }
 
-export function omit<T extends Dict, K extends keyof T>(keys: readonly K[], obj: T): SimplifyOnce<Omit<T, K>> {
+export function omit<T extends Dict, K extends keyof T>(obj: T, keys: readonly K[]): SimplifyOnce<Omit<T, K>> {
     return Object.fromEntries(entriesOf(obj).filter(([k]) => !keys.includes(k as K))) as SimplifyOnce<Omit<T, K>>
 }

@@ -1,1 +1,1 @@
-export { iprependIterator } from './prepend-iterator'
+export { prependIterator } from './prepend-iterator'

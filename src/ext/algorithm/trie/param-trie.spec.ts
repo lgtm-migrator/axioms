@@ -1,8 +1,8 @@
 import { parameterTrie } from '.'
 
-import { isDefined } from '../../guard'
-import { forAll, tuple, array, string, unknown, boolean } from '../../random'
-import { Nothing } from '../../type'
+import { isDefined } from '../../../guard'
+import { forAll, tuple, array, string, unknown, boolean } from '../../../random'
+import { Nothing } from '../../../type'
 
 test('insert', () => {
     const trie = parameterTrie<number>()

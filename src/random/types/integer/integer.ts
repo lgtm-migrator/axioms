@@ -54,7 +54,7 @@ export function biasInteger({ min, max }: IntegerConstraints, { rng, bias }: Bia
 
 export function shrinkInteger({ min, max }: IntegerConstraints, x: number): Tree<number> {
     const destination = min <= 0 && max >= 0 ? 0 : min < 0 ? max : min
-    return expandTree((v) => towards(destination, v), tree(x, [tree(destination)]))
+    return expandTree((v) => towards(v, destination), tree(x, [tree(destination)]))
 }
 
 export function integer(constraints: RelaxedPartial<IntegerConstraints> = {}): Integrated<IntegerConstraints, number> {

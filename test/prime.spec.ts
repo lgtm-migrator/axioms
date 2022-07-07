@@ -9,11 +9,11 @@ test('prime', () => {
         while (true) {
             const prime = next(xs)
             yield prime.right
-            xs = filter((x) => x % prime.right !== 0, xs)
+            xs = filter(xs, (x) => x % prime.right !== 0)
         }
     }
 
-    expect(collect(take(10, primes()))).toMatchInlineSnapshot(`
+    expect(collect(take(primes(), 10))).toMatchInlineSnapshot(`
         Array [
           2,
           3,

@@ -97,8 +97,8 @@ test('memoizeAttributes', () => {
         x: () => ++i,
     }
     expect({ ...x }).toEqual({ ...x })
-    expect(mapValues((f) => f(), x)).not.toEqual(mapValues((f) => f(), x))
-    expect(mapValues((f) => f(), x)).toMatchInlineSnapshot(`
+    expect(mapValues(x, (f) => f())).not.toEqual(mapValues(x, (f) => f()))
+    expect(mapValues(x, (f) => f())).toMatchInlineSnapshot(`
         Object {
           "x": 3,
         }
@@ -106,15 +106,15 @@ test('memoizeAttributes', () => {
 
     const y = memoizeAttributes(x)
     expect({ ...y }).toEqual({ ...y })
-    expect(mapValues((f) => f(), y)).toEqual(mapValues((f) => f(), y))
-    expect(mapValues((f) => f(), y)).toMatchInlineSnapshot(`
+    expect(mapValues(y, (f) => f())).toEqual(mapValues(y, (f) => f()))
+    expect(mapValues(y, (f) => f())).toMatchInlineSnapshot(`
         Object {
           "x": 4,
         }
     `)
     y.x.clear()
-    expect(mapValues((f) => f(), y)).toEqual(mapValues((f) => f(), y))
-    expect(mapValues((f) => f(), y)).toMatchInlineSnapshot(`
+    expect(mapValues(y, (f) => f())).toEqual(mapValues(y, (f) => f()))
+    expect(mapValues(y, (f) => f())).toMatchInlineSnapshot(`
         Object {
           "x": 5,
         }

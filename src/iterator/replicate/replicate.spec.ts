@@ -9,8 +9,8 @@ test('correct length', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
         ([n, p]) => {
-            const xs = replicate(n, p)
-            expect(foldl((s) => s + 1, 0, xs)).toBe(n)
+            const xs = replicate(p, n)
+            expect(foldl(xs, (s) => s + 1, 0)).toBe(n)
         },
         { tests: 10 }
     )
@@ -20,8 +20,8 @@ test('all same primitive', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
         ([n, p]) => {
-            const xs = replicate(n, p)
-            return all((x) => x === p, xs)
+            const xs = replicate(p, n)
+            return all(xs, (x) => x === p)
         },
         { tests: 10 }
     )
@@ -31,8 +31,8 @@ test('all same primitive from function', () => {
     forAll(
         tuple(natural({ max: 20000 }), unknown()),
         ([n, p]) => {
-            const xs = replicate(n, () => p)
-            return all((x) => x === p, xs)
+            const xs = replicate(() => p, n)
+            return all(xs, (x) => x === p)
         },
         { tests: 10 }
     )
@@ -43,11 +43,11 @@ test('range from function with index', () => {
         natural({ max: 20000 }),
         (n) => {
             all(
-                ([i, r]) => i === r,
                 zip(
-                    replicate(n, (i) => i),
+                    replicate((i) => i, n),
                     range(0, n)
-                )
+                ),
+                ([i, r]) => i === r
             )
         },
         { tests: 10 }
@@ -55,7 +55,7 @@ test('range from function with index', () => {
 })
 
 test('spread', () => {
-    expect(collect(replicate(10, () => false))).toMatchInlineSnapshot(`
+    expect(collect(replicate(() => false, 10))).toMatchInlineSnapshot(`
         Array [
           false,
           false,

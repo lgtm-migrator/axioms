@@ -4,5 +4,5 @@ import type { Traversable } from '../../type'
 export function isSuperset<T>(superset: Traversable<T>, sub: Traversable<T>) {
     const sxs = new Set(superset)
     const sys = new Set(sub)
-    return all((x) => sxs.has(x), sys)
+    return all(sys, (x) => sxs.has(x))
 }

@@ -28,7 +28,7 @@ export function array<T>(arbitrary: Arbitrary<T>, context: RelaxedPartial<ArrayG
                 } else {
                     size = aint.sample(ctx)
                 }
-                return replicate(size, biasedValue)
+                return replicate(biasedValue, size)
             })(),
             {
                 minLength,
@@ -64,14 +64,14 @@ export function arrayWith<T>(
                     size = aint.sample(ctx)
                 }
                 return replicateWithMemory(
+                    biasedValue,
                     (x, xs, _i, skippedInRow) =>
                         predicate(
                             x.value,
                             xs.map((v) => v.value),
                             skippedInRow
                         ),
-                    size,
-                    biasedValue
+                    size
                 )
             })(),
             {

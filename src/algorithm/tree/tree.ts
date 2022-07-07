@@ -1,5 +1,8 @@
-import { applicative, map, filter, concat } from '../../iterator'
-import type { Traversable, Showable } from '../../type'
+import { applicative } from '../../iterator/applicative'
+import { concat } from '../../iterator/concat'
+import { filter } from '../../iterator/filter'
+import { map } from '../../iterator/map'
+import type { Printable, Traversable } from '../../type'
 import { queue } from '../queue'
 import { stack } from '../stack'
 
@@ -13,23 +16,23 @@ export function tree<T>(x: T, children?: Traversable<Tree<T>>): Tree<T> {
 }
 
 export function applicativeTree<T>(x: Tree<T>): Tree<T> {
-    return { value: x.value, children: applicative(map((c) => applicativeTree(c), x.children)) }
+    return { value: x.value, children: applicative(map(x.children, (c) => applicativeTree(c))) }
 }
 
-export function mapTree<T, U>(f: (x: T) => U, x: Tree<T>): Tree<U> {
-    return { value: f(x.value), children: map((c) => mapTree(f, c), x.children) }
+export function mapTree<T, U>(x: Tree<T>, f: (x: T) => U): Tree<U> {
+    return { value: f(x.value), children: map(x.children, (c) => mapTree(c, f)) }
 }
 
 export function mapApplicativeTree<T, U>(f: (x: T) => U, x: Tree<T>): Tree<U> {
-    return { value: f(x.value), children: applicative(map((c) => mapTree(f, c), x.children)) }
+    return { value: f(x.value), children: applicative(map(x.children, (c) => mapTree(c, f))) }
 }
 
 export function filterTree<T>(f: (x: T) => boolean, x: Tree<T>): Tree<T> {
     return {
         value: x.value,
         children: map(
-            (c) => filterTree(f, c),
-            filter((c) => f(c.value), x.children)
+            filter(x.children, (c) => f(c.value)),
+            (c) => filterTree(f, c)
         ),
     }
 }
@@ -38,23 +41,23 @@ export function filterApplicativeTree<T>(f: (x: T) => boolean, x: Tree<T>): Tree
         value: x.value,
         children: applicative(
             map(
-                (c) => filterTree(f, c),
-                filter((y) => f(y.value), x.children)
+                filter(x.children, (y) => f(y.value)),
+                (c) => filterTree(f, c)
             )
         ),
     }
 }
 
 export function unfoldTree<T>(f: (x: T) => Traversable<T>, x: T): Tree<T> {
-    return { value: x, children: map((c) => unfoldTree(f, c), f(x)) }
+    return { value: x, children: map(f(x), (c) => unfoldTree(f, c)) }
 }
 
 export function expandTree<T>(f: (x: T) => Traversable<T>, x: Tree<T>): Tree<T> {
     return {
         value: x.value,
         children: concat(
-            map((c) => expandTree(f, c), x.children),
-            map((c) => unfoldTree(f, c), f(x.value))
+            map(x.children, (c) => expandTree(f, c)),
+            map(f(x.value), (c) => unfoldTree(f, c))
         ),
     }
 }
@@ -62,7 +65,7 @@ export function expandTree<T>(f: (x: T) => Traversable<T>, x: Tree<T>): Tree<T> 
 export function evaluateTree<T>(x: Tree<T>): Tree<T> {
     return {
         value: x.value,
-        children: map((c) => evaluateTree(c), x.children),
+        children: map(x.children, (c) => evaluateTree(c)),
     }
 }
 
@@ -95,7 +98,7 @@ export function* bfs<T>(node: Tree<T>): Traversable<T, void> {
     }
 }
 
-export function showTree<T extends Showable>(t: Tree<T>, indent = '', isLast = true, depth = 0): string {
+export function showTree<T extends Printable>(t: Tree<T>, indent = '', isLast = true, depth = 0): string {
     if (depth > 2) {
         return `${indent}└─...`
     }
