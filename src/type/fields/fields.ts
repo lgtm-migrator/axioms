@@ -8,9 +8,9 @@ export type NoNullableFields<T> = {
 }
 
 export type UndefinedFields<T> = {
-    [P in keyof T]-?: T[P] | undefined
+    [P in keyof T]?: T[P] | undefined
 }
 
 export type NullableFields<T> = {
-    [P in keyof T]-?: T[P] | null
+    [P in keyof T]?: T[P] | null
 }
