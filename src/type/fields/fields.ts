@@ -4,5 +4,13 @@ export type NoUndefinedFields<T> = {
 }
 
 export type NoNullableFields<T> = {
-    [P in keyof T]-?: Exclude<T[P], null | undefined>
+    [P in keyof T]-?: Exclude<T[P], null>
+}
+
+export type UndefinedFields<T> = {
+    [P in keyof T]-?: T[P] | undefined
+}
+
+export type NullableFields<T> = {
+    [P in keyof T]-?: T[P] | null
 }
