@@ -1,1 +1,1 @@
-export { omitUndefined, omitSymbols, omit } from './omit'
+export { omitUndefined, omitSymbols, omit, DistributiveOmit } from './omit'
