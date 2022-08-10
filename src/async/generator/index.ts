@@ -1,1 +1,1 @@
-export { asyncChunk, asyncCollect, asyncMap } from './generator'
+export { asyncChunk, asyncMap } from './generator'

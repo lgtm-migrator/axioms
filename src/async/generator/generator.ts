@@ -1,12 +1,4 @@
-import type { AsyncTraversable } from '../traversable'
-
-export async function asyncCollect<T>(xs: AsyncTraversable<T>): Promise<T[]> {
-    const ys: T[] = []
-    for await (const item of xs) {
-        ys.push(item)
-    }
-    return ys
-}
+import type { AsyncTraversable } from '../../type/async'
 
 export async function* asyncChunk<T>(xs: AsyncTraversable<T>, size: number): AsyncTraversable<T[]> {
     let chunk: T[] = []
@@ -23,8 +15,8 @@ export async function* asyncChunk<T>(xs: AsyncTraversable<T>, size: number): Asy
 }
 
 export async function* asyncMap<I, O>(
-    mapper: (x: I, index: number) => O | Promise<O>,
-    xs: AsyncTraversable<I>
+    xs: AsyncTraversable<I>,
+    mapper: (x: I, index: number) => O | Promise<O>
 ): AsyncTraversable<O> {
     let i = 0
     for await (const x of xs) {
