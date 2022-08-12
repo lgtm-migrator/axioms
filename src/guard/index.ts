@@ -1,3 +1,4 @@
+export * from './as-array'
 export * from './has-properties-defined'
 export * from './is-alpha'
 export * from './is-alpha-numeric'
