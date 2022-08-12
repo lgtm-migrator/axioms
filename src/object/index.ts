@@ -1,5 +1,6 @@
 export * from './clone-deep'
 export * from './entries-of'
+export * from './from-entries'
 export * from './has'
 export * from './keys-of'
 export * from './map-values'

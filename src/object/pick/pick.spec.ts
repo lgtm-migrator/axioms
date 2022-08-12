@@ -8,20 +8,20 @@ describe('pickBy', () => {
     test('pickBy true x === identity', () => {
         forAll(dict(unknown()), (x) =>
             equal(
-                pickBy(() => true, x),
+                pickBy(x, () => true),
                 x
             )
         )
     })
 
     test('pickBy true x !== [ref] x', () => {
-        forAll(dict(unknown()), (x) => pickBy(() => true, x) !== x)
+        forAll(dict(unknown()), (x) => pickBy(x, () => true) !== x)
     })
 
     test('pickBy false x == {}', () => {
         forAll(dict(unknown()), (x) =>
             equal(
-                pickBy(() => false, x),
+                pickBy(x, () => false),
                 {}
             )
         )
@@ -29,14 +29,14 @@ describe('pickBy', () => {
 
     test('key filtered in both filtered and original', () => {
         forAll(dict(unknown()), (x) => {
-            const filtered = pickBy((key) => deterministicBoolean(key), x)
+            const filtered = pickBy(x, (key) => deterministicBoolean(key))
             return all(keysOf(filtered), (k) => k in x && k in filtered)
         })
     })
 
     test('key filtered if not picked', () => {
         forAll(dict(unknown()), (x) => {
-            const filtered = pickBy(([k]) => deterministicBoolean(k), x)
+            const filtered = pickBy(x, ([k]) => deterministicBoolean(k))
             return all(keysOf(x), (k) => (deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
         })
     })
@@ -76,5 +76,18 @@ describe('pick', () => {
             const filtered = pick(x, keysOf(x).filter(deterministicBoolean))
             return all(keysOf(x), (k) => (deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
         })
+    })
+
+    test('infers correct type', () => {
+        const orignal = {
+            foo: 'bar' as const,
+            fooz: 'baz' as const,
+        }
+        const picked: { foo: 'bar' } = pick(orignal, ['foo'])
+        expect(picked).toMatchInlineSnapshot(`
+            Object {
+              "foo": "bar",
+            }
+        `)
     })
 })

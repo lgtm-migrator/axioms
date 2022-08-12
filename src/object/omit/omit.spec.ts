@@ -1,6 +1,6 @@
-import { omitUndefined, omit } from '.'
+import { omitUndefined, omit, omitBy } from '.'
 
-import { keysOf } from '..'
+import { keysOf, pickBy } from '..'
 import { all, equal } from '../../iterator'
 import { forAll, dict, unknown, deterministicBoolean } from '../../random'
 
@@ -20,6 +20,52 @@ describe('omitUndefined', () => {
         forAll(dict(unknown()), (x) => {
             const filtered = omitUndefined(x)
             return all(keysOf(x), (k) => (x[k] !== undefined ? k in filtered : !(k in filtered) && k in x))
+        })
+    })
+})
+
+describe('omitBy', () => {
+    test('omitBy false x === identity', () => {
+        forAll(dict(unknown()), (x) =>
+            equal(
+                omitBy(x, () => false),
+                x
+            )
+        )
+    })
+
+    test('omitBy false x !== [ref] x', () => {
+        forAll(dict(unknown()), (x) => omitBy(x, () => false) !== x)
+    })
+
+    test('omitBy true x == {}', () => {
+        forAll(dict(unknown()), (x) =>
+            equal(
+                omitBy(x, () => true),
+                {}
+            )
+        )
+    })
+
+    test('key filtered in both filtered and original', () => {
+        forAll(dict(unknown()), (x) => {
+            const filtered = omitBy(x, (key) => deterministicBoolean(key))
+            return all(keysOf(filtered), (k) => k in x && k in filtered)
+        })
+    })
+
+    test('key filtered if not picked', () => {
+        forAll(dict(unknown()), (x) => {
+            const filtered = omitBy(x, ([k]) => deterministicBoolean(k))
+            return all(keysOf(x), (k) => !(deterministicBoolean(k) ? k in filtered : !(k in filtered) && k in x))
+        })
+    })
+
+    test('omitBy ~ pickBy', () => {
+        forAll(dict(unknown()), (x) => {
+            const omitted = omitBy(x, ([k]) => deterministicBoolean(k))
+            const picked = pickBy(x, ([k]) => !deterministicBoolean(k))
+            return equal(omitted, picked)
         })
     })
 })

@@ -104,7 +104,7 @@ test('foo3', () => {
     `)
 })
 
-test.only('foo4', () => {
+test('foo4', () => {
     const aobject = object({})
     expect(aobject.random({ rng: xoroshiro128plus(42n) })).toMatchInlineSnapshot(`Object {}`)
 })

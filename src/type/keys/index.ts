@@ -1,1 +1,1 @@
-export { KeyOf, KeysOfType, RequiredKeys, RequireKeys, OptionalKeys } from './keys'
+export { DefinedKeys, KeyOf, KeysOfType, RequiredKeys, RequireKeys, OptionalKeys } from './keys'
